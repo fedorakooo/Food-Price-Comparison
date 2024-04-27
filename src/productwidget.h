@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QFrame>
 #include <QMouseEvent>
+#include "product.h"
+
 namespace Ui {
 class ProductWidget;
 }
@@ -16,7 +18,7 @@ protected:
 public:
     explicit ProductWidget(QWidget *parent = nullptr);
     ~ProductWidget();
-    void add();
+    void add(Product* product);
 private:
     int const movingWidgetXCentre = 200;
     int const movingWidgetYCentre = 100;

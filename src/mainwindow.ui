@@ -78,12 +78,12 @@
      <string>&lt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="numberPage">
+   <widget class="QLabel" name="labelNumberPage">
     <property name="geometry">
      <rect>
       <x>1392</x>
       <y>800</y>
-      <width>31</width>
+      <width>41</width>
       <height>41</height>
      </rect>
     </property>

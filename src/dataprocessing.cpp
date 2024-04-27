@@ -2,12 +2,14 @@
 
 DataProcessing::DataProcessing() {
     QString buildPath = QCoreApplication::applicationDirPath();
-    QString path = "";
+    path = "";
     for(int i = 0; i < buildPath.size() - 48; i++) {
         path += buildPath[i];
     }
     file = new QFile(path + "/Data/TextInformation/products.txt");
     addSetProduct();
+    errorPicture = QPixmap(path + "/Data/Picture/Product/white");
+    errorProduct = new Product(" ", errorArr, errorPicture);
 }
 
 void DataProcessing::addSetProduct() {
@@ -35,11 +37,18 @@ void DataProcessing::addSetProduct() {
                     k++;
                 }
             }
-            vectorProduct.push_back(Product(name, arrPrice));
+            QPixmap pixmap(path + "/Data/Picture/Product/" + name);
+            Product* newProduct = new Product(name, arrPrice, pixmap);
+            qDebug() << newProduct->getName();
+            vectorProduct.push_back(newProduct);
         }
     }
 }
 
-Product DataProcessing::getProduct(int number) {
-    return vectorProduct[number];
+Product* DataProcessing::getProduct(int number) {
+    return ((number >= 0 && number < vectorProduct.size()) ? vectorProduct.at(number) : errorProduct);
+}
+
+int DataProcessing::getNumberAllProduct() {
+    return vectorProduct.size();
 }

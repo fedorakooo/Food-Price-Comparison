@@ -1,14 +1,16 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
-#include <QString>
 
+#include <QString>
+#include <QPixmap>
 class Product
 {
 public:
-    Product(QString name, double* arrCostProduct);
+    Product(QString name, double* arrCostProduct, QPixmap pixmap);
     double* getArrPrice();
     double getBestPrice();
     QString getName();
+    QPixmap getPixmap();
 private:
     QString nameProduct;
     enum Shops {
@@ -22,6 +24,7 @@ private:
         ShopGreen
     };
     double arrCostProduct[7] {};
+    QPixmap picture;
 };
 
 #endif // PRODUCT_H
