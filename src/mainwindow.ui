@@ -530,6 +530,71 @@
      <string>🔍</string>
     </property>
    </widget>
+   <widget class="QRadioButton" name="radioRecommendProduct">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>60</y>
+      <width>221</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>По рекомендации товара</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioIncreasingName">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>60</y>
+      <width>271</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>По увеличению наименования</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioReductionName">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>60</y>
+      <width>261</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>По уменьшению наименования</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioIncreasingPrice">
+    <property name="geometry">
+     <rect>
+      <x>880</x>
+      <y>60</y>
+      <width>221</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>По увеличению цены</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioReductionProce">
+    <property name="geometry">
+     <rect>
+      <x>1110</x>
+      <y>60</y>
+      <width>211</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>По убыванию цены</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

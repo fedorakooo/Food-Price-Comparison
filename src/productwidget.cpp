@@ -12,6 +12,7 @@ ProductWidget::ProductWidget(QWidget *parent) :
                          Qt::Window |
                          Qt::Popup);
 }
+
 void ProductWidget::add(Product* product) {
     if(product->getName() != " " && product->getBestPrice() != 0) {
         ui->nameProduct->setText(product->getName());
@@ -28,6 +29,7 @@ void ProductWidget::add(Product* product) {
         this->show();
     }
 }
+
 ProductWidget::~ProductWidget()
 {
     delete ui;

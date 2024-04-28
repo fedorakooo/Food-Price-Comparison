@@ -39,7 +39,6 @@ void DataProcessing::addSetProduct() {
             }
             QPixmap pixmap(path + "/Data/Picture/Product/" + name);
             Product* newProduct = new Product(name, arrPrice, pixmap);
-            qDebug() << newProduct->getName();
             vectorProduct.push_back(newProduct);
         }
     }

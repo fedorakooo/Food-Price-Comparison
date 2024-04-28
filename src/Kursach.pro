@@ -14,6 +14,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     product.cpp \
+    productsort.cpp \
     productwidget.cpp \
     stringprocessing.cpp
 
@@ -22,6 +23,7 @@ HEADERS += \
     dataprocessing.h \
     mainwindow.h \
     product.h \
+    productsort.h \
     productwidget.h \
     stringprocessing.h
 

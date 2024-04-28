@@ -23,6 +23,7 @@ private:
     int const movingWidgetXCentre = 200;
     int const movingWidgetYCentre = 100;
     Ui::ProductWidget *ui;
+    static const int RUN = 64;
 };
 
 #endif // PRODUCTWIDGET_H

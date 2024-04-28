@@ -11,6 +11,7 @@
 #include "productwidget.h"
 #include "product.h"
 #include "stringprocessing.h"
+#include "productsort.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -76,5 +77,6 @@ private slots:
     void on_buttonAddProduct_5_clicked();
     void on_buttonAddProduct_6_clicked();
     void on_buttonSearchProduct_clicked();
+    void on_radioIncreasingPrice_clicked();
 };
 #endif // MAINWINDOW_H

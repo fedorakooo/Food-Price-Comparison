@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     mainWidget = new QWidget(this);
     ui->setupUi(this);
-
+    ui->radioRecommendProduct->setChecked(true);
 
     setCorrectPathDirectory();
     setArrProductMainWindow();
@@ -331,3 +331,14 @@ void MainWindow::setArrProductMainWindow(QString search) {
     }
     }
 }
+
+void MainWindow::on_radioIncreasingPrice_clicked()
+{
+    ProductSort::timsort(&arrProductMainWindow);
+    for(int i = 0; i < arrProductMainWindow.size(); i++) {
+        qDebug() << arrProductMainWindow[i]->getBestPrice();
+    }
+    //updateInformationProduct();
+    //setProductInformationMainWindow();
+}
+
