@@ -1,5 +1,6 @@
 #ifndef DATAPROCESSING_H
 #define DATAPROCESSING_H
+
 #include <QFile>
 #include <QCoreApplication>
 #include <QVector>
@@ -12,13 +13,14 @@ public:
     DataProcessing();
     Product* getProduct(int number);
     int getNumberAllProduct();
+    QVector<Product*> getVectorAllProduct();
 private:
     QFile* file;
     QVector<Product*> vectorProduct;
     void addSetProduct();
+    QString path;
     double errorArr[7] {};
     Product* errorProduct;
-    QString path;
     QPixmap errorPicture;
 };
 

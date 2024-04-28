@@ -156,16 +156,6 @@
      </property>
     </widget>
    </widget>
-   <widget class="QLineEdit" name="lineSearch">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>20</y>
-      <width>1271</width>
-      <height>28</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="buttonBasket">
     <property name="geometry">
      <rect>
@@ -503,6 +493,42 @@
       <string>➕</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QLineEdit" name="lineSearch">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>20</y>
+      <width>1211</width>
+      <height>28</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>1260</x>
+      <y>20</y>
+      <width>31</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>⨯</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonSearchProduct">
+    <property name="geometry">
+     <rect>
+      <x>1290</x>
+      <y>20</y>
+      <width>31</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>🔍</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

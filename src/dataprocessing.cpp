@@ -52,3 +52,7 @@ Product* DataProcessing::getProduct(int number) {
 int DataProcessing::getNumberAllProduct() {
     return vectorProduct.size();
 }
+
+QVector<Product*> DataProcessing::getVectorAllProduct() {
+    return vectorProduct;
+}

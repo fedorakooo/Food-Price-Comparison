@@ -10,6 +10,7 @@
 #include "basketwidget.h"
 #include "productwidget.h"
 #include "product.h"
+#include "stringprocessing.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -34,6 +35,7 @@ private:
     int numberPage;
     int numberAllPage;
     Product* arrProductScreen[6] {};
+    QVector<Product*> arrProductMainWindow;
     int const sizeElementPathBuildFile = 48;
 private slots:
     void setInformationFirstProduct(Product* product);
@@ -47,6 +49,8 @@ private slots:
     void setCorrectNamePrice();
     void setCorrectPathDirectory();
     void setFon();
+    void setArrProductMainWindow();
+    void setArrProductMainWindow(QString search);
     void setProductInformationMainWindow();
     void setSettingFontPrice();
     void setSettingButtonsOpenProductWidget();
@@ -71,5 +75,6 @@ private slots:
     void on_buttonAddProduct_4_clicked();
     void on_buttonAddProduct_5_clicked();
     void on_buttonAddProduct_6_clicked();
+    void on_buttonSearchProduct_clicked();
 };
 #endif // MAINWINDOW_H

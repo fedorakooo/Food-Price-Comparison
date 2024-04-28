@@ -11,6 +11,7 @@ Product::Product(QString name, double* arrCostProduct, QPixmap pixmap) {
 QPixmap Product::getPixmap() {
     return picture;
 }
+
 double* Product::getArrPrice() {
     return arrCostProduct;
 }

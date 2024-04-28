@@ -1,6 +1,5 @@
 #include "productwidget.h"
 #include "ui_productwidget.h"
-#include <QWidget>
 
 ProductWidget::ProductWidget(QWidget *parent) :
     QWidget(parent),

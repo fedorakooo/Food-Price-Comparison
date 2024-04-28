@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QPixmap>
+
 class Product
 {
 public:

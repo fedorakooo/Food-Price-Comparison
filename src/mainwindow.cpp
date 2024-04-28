@@ -8,13 +8,17 @@ MainWindow::MainWindow(QWidget *parent)
     mainWidget = new QWidget(this);
     ui->setupUi(this);
 
+
     setCorrectPathDirectory();
+    setArrProductMainWindow();
+
     numberPage = 0;
     numberAllPage = data.getNumberAllProduct() / 6;
     updateInformationProduct();
     setSettingButtonsOpenProductWidget();
     basketWidget = new BasketWidget();
     setFon();
+
 
     setCorrectFontPrice();
     setCorrectNamePrice();
@@ -32,7 +36,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->showFullScreen();
 }
-
 
 MainWindow::~MainWindow()
 {
@@ -73,7 +76,7 @@ void MainWindow::setSettingButtonsOpenProductWidget() {
 }
 void MainWindow::updateInformationProduct() {
     for(int i = numberPage * 6; i < (numberPage + 1) * 6; i++) {
-        arrProductScreen[i % 6] = data.getProduct(i);
+        arrProductScreen[i % 6] = arrProductMainWindow[i];
     }
 }
 void MainWindow::setInformationSomeProduct(int numberProduct, Product* product) {
@@ -277,4 +280,54 @@ void MainWindow::on_buttonAddProduct_5_clicked()
     basketWidget->addProductBasket(arrProductScreen[4]);
 }
 
+void MainWindow::on_buttonSearchProduct_clicked()
+{
+    QString search = ui->lineSearch->text();
+    setArrProductMainWindow(search);
+    updateInformationProduct();
+    setProductInformationMainWindow();
+}
 
+void MainWindow::setArrProductMainWindow() {
+    arrProductMainWindow.clear();
+    int i = 0;
+    for(; i < data.getNumberAllProduct(); i++) {
+        arrProductMainWindow.push_back(data.getProduct(i));
+    }
+    if(i % 6 != 5) {
+        double errorArr[7] {};
+        Product* errorProduct;
+        QPixmap errorPicture;
+        errorProduct = new Product(" ", errorArr, errorPicture);
+        for(; i % 6 != 5; i++) {
+            arrProductMainWindow.push_back(errorProduct);
+        }
+        arrProductMainWindow.push_back(errorProduct);
+    }
+}
+
+void MainWindow::setArrProductMainWindow(QString search) {
+    if(search == "") {
+        setArrProductMainWindow();
+    }
+    else {
+    arrProductMainWindow.clear();
+    int i = 0;
+    for(; i < data.getNumberAllProduct(); i++) {
+        if(StringProcessing::searchKMP(data.getProduct(i)->getName(), search)) {
+            arrProductMainWindow.push_back(data.getProduct(i));
+        }
+
+    }
+    if(arrProductMainWindow.size() % 6 != 5) {
+        double errorArr[7] {};
+        Product* errorProduct;
+        QPixmap errorPicture;
+        errorProduct = new Product(" ", errorArr, errorPicture);
+        for(; arrProductMainWindow.size() % 6 != 5; i++) {
+            arrProductMainWindow.push_back(errorProduct);
+        }
+        arrProductMainWindow.push_back(errorProduct);
+    }
+    }
+}

@@ -14,14 +14,16 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     product.cpp \
-    productwidget.cpp
+    productwidget.cpp \
+    stringprocessing.cpp
 
 HEADERS += \
     basketwidget.h \
     dataprocessing.h \
     mainwindow.h \
     product.h \
-    productwidget.h
+    productwidget.h \
+    stringprocessing.h
 
 FORMS += \
     basketwidget.ui \
