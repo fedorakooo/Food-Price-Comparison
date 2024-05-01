@@ -1,5 +1,5 @@
 #include "productsort.h"
-
+#include <QDebug>
 ProductSort::ProductSort() {
 
 }
@@ -12,10 +12,10 @@ void ProductSort::insertionSort(QVector<Product*> *array, int start_index, int e
         temp = array->at(i);
         int j = i - 1;
 
-        while(j>=0 && temp <= (*array)[j])
+        while(j >= 0 && temp->getBestPrice() < array->at(j)->getBestPrice())
         {
-            array[j+1] = array[j];
-            j = j-1;
+            (*array)[j+1] = array->at(j);
+            j--;
         }
         (*array)[j+1] = temp;
     }
@@ -30,12 +30,12 @@ void ProductSort::merge(QVector<Product*> *array, int start_index, int mid, int 
 
     for (int i = 0; i < left_size; i++)
     {
-        left_array[i] = (*array)[start_index + i];
+        left_array[i] = array->at(start_index + i);
     }
 
     for (int j = 0; j < right_size; j++)
     {
-        right_array[j] = (*array)[mid + 1 + j];
+        right_array[j] = array->at(mid + 1 + j);
     }
 
     int i = 0;
@@ -67,9 +67,14 @@ void ProductSort::merge(QVector<Product*> *array, int start_index, int mid, int 
 
 void ProductSort::timsort(QVector<Product*> *array)
 {
+
+    while(array->back()->getBestPrice() == 0) {
+        array->pop_back();
+    }
+
     for (int i = 0; i < (*array).size(); i = i + RUN)
     {
-        insertionSort(array, i, qMin((i+RUN-1), ((*array).size()-1)));
+        insertionSort(array, i, qMin((i+RUN-1), ((array)->size() - 1)));
     }
 
     for (int n = RUN; n < (*array).size(); n *= 2)

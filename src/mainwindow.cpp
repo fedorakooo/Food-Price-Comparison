@@ -335,10 +335,19 @@ void MainWindow::setArrProductMainWindow(QString search) {
 void MainWindow::on_radioIncreasingPrice_clicked()
 {
     ProductSort::timsort(&arrProductMainWindow);
-    for(int i = 0; i < arrProductMainWindow.size(); i++) {
-        qDebug() << arrProductMainWindow[i]->getBestPrice();
+    updateInformationProduct();
+
+    setProductInformationMainWindow();
+    int i = arrProductMainWindow.size();
+    if(i % 6 != 5) {
+        double errorArr[7] {};
+        Product* errorProduct;
+        QPixmap errorPicture;
+        errorProduct = new Product(" ", errorArr, errorPicture);
+        for(; i % 6 != 5; i++) {
+            arrProductMainWindow.push_back(errorProduct);
+        }
+        arrProductMainWindow.push_back(errorProduct);
     }
-    //updateInformationProduct();
-    //setProductInformationMainWindow();
 }
 
