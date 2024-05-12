@@ -2,14 +2,16 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+
 #include <QFont>
 #include <QWidget>
 #include <QDir>
 #include <QGroupBox>
-#include "dataprocessing.h"
 #include "basketwidget.h"
 #include "productwidget.h"
 #include "product.h"
+#include "database.h"
+#include "dataprocessing.h"
 #include "stringprocessing.h"
 #include "productsort.h"
 
@@ -30,6 +32,7 @@ private:
     BasketWidget *basketWidget;
     QFont fontPrice;
     QString path = "";
+    DataBase* base = new DataBase();
     QFont fontName;
     DataProcessing data;
     Ui::MainWindow *ui;

@@ -1,5 +1,7 @@
-QT       += core gui
+QT += core gui
 QT += widgets
+QT += sql
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -10,25 +12,28 @@ CONFIG += c++11
 
 SOURCES += \
     basketwidget.cpp \
-    dataprocessing.cpp \
+    database.cpp \
     main.cpp \
     mainwindow.cpp \
     product.cpp \
     productsort.cpp \
     productwidget.cpp \
-    stringprocessing.cpp
+    stringprocessing.cpp \
+    dataprocessing.cpp
 
 HEADERS += \
     basketwidget.h \
-    dataprocessing.h \
+    database.h \
     mainwindow.h \
     product.h \
     productsort.h \
     productwidget.h \
-    stringprocessing.h
+    stringprocessing.h \
+    dataprocessing.h
 
 FORMS += \
     basketwidget.ui \
+    database.ui \
     mainwindow.ui \
     productwidget.ui
 
@@ -69,5 +74,6 @@ DISTFILES += \
     Data/Picture/Product/Шоколадный_батончик_Snickers_51г.jpg \
     Data/Picture/Product/Шоколадный_батончик_Snickers_51г.jpg \
     Data/TextInformation/products.txt \
+    README.md \
     README.md \
     ащт

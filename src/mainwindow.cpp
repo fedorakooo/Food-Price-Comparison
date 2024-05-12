@@ -7,10 +7,13 @@ MainWindow::MainWindow(QWidget *parent)
 {
     mainWidget = new QWidget(this);
     ui->setupUi(this);
-    ui->radioRecommendProduct->setChecked(true);
+
+    ui->radioRecommendProduct->setChecked(true); // установка на radioButton
 
     setCorrectPathDirectory();
     setArrProductMainWindow();
+
+    qDebug() << QCoreApplication::applicationDirPath() + "/data.txt";
 
     numberPage = 0;
     numberAllPage = data.getNumberAllProduct() / 6;
@@ -317,7 +320,6 @@ void MainWindow::setArrProductMainWindow(QString search) {
         if(StringProcessing::searchKMP(data.getProduct(i)->getName(), search)) {
             arrProductMainWindow.push_back(data.getProduct(i));
         }
-
     }
     if(arrProductMainWindow.size() % 6 != 5) {
         double errorArr[7] {};
