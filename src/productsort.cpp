@@ -1,5 +1,4 @@
 #include "productsort.h"
-#include <QDebug>
 ProductSort::ProductSort() {
 
 }

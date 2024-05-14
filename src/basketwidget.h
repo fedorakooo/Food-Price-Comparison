@@ -14,6 +14,7 @@ class BasketWidget : public QWidget
 public:
     explicit BasketWidget(QWidget *parent = nullptr);
     ~BasketWidget();
+public slots:
     void addProductBasket(Product* product);
 private:
     int numberProductOnBasket;

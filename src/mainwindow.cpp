@@ -3,41 +3,57 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow), numberPage(0)
 {
     mainWidget = new QWidget(this);
     ui->setupUi(this);
 
-    ui->radioRecommendProduct->setChecked(true); // установка на radioButton
+    ui->radioRecommendProduct->setChecked(true);
 
-    setCorrectPathDirectory();
-    setArrProductMainWindow();
+    path = QDir::currentPath();
 
-    qDebug() << QCoreApplication::applicationDirPath() + "/data.txt";
-
-    numberPage = 0;
-    numberAllPage = data.getNumberAllProduct() / 6;
-    updateInformationProduct();
-    setSettingButtonsOpenProductWidget();
-    basketWidget = new BasketWidget();
-    setFon();
-
-
-    setCorrectFontPrice();
-    setCorrectNamePrice();
-
-    setSettingFontPrice();
-    setSettingFontName();
+    fillAllWidget();
+    setSettingAllWidget();
 
     productWidget = new ProductWidget();
+    basketWidget = new BasketWidget();
 
+
+    {
+        ui->comboBoxCategory->addItem("Категории");
+        ui->comboBoxCategory->addItem("Вода, напитки, соки, кофе и чай");
+    }
+    numberAllPage = data->product.size() / 6;
+
+    updatePage();
+
+    connect(ui->buttonClose, &QPushButton::clicked, this, &MainWindow::close);
+    connect(ui->buttonCollapse, &QPushButton::clicked, this, &MainWindow::showMinimized);
+    connect(ui->buttonBasket, &QPushButton::clicked, basketWidget, &BasketWidget::show);
     connect(ui->buttonNextPage, &QPushButton::clicked, this, &MainWindow::nextPage);
-    connect(ui->buttonPreviosPage, &QPushButton::clicked, this, &MainWindow::previosPage);
-
-    changeLabelPage();
-    setProductInformationMainWindow();
+    connect(ui->buttonPreviosPage, &QPushButton::clicked, this, &MainWindow::previousPage);
+    connect(ui->comboBoxCategory, SIGNAL(currentIndexChanged(int)), this, SLOT(setNewSubcategory(int)));
 
     this->showFullScreen();
+}
+
+void MainWindow::setNewSubcategory(int number) {
+    switch(number) {
+        case 0: {
+            ui->comboBoxSubcategoty->clear();
+            ui->comboBoxSubcategoty->addItem("Подкатегории");
+            break;
+        }
+        case 1: {
+            ui->comboBoxSubcategoty->clear();
+            ui->comboBoxSubcategoty->addItem("Подкатегории");
+            ui->comboBoxSubcategoty->addItem("Вода минеральная, питьевая");
+            ui->comboBoxSubcategoty->addItem("Чай, чайные напитки");
+            ui->comboBoxSubcategoty->addItem("Напитки, напитки сокосодержащие");
+            ui->comboBoxSubcategoty->addItem("Кофе в зернах");
+            break;
+        }
+    }
 }
 
 MainWindow::~MainWindow()
@@ -45,311 +61,171 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setProductInformationMainWindow() {
+void MainWindow::fillArrLabelPrice() {
+    arrLabelPrice.push_back(ui->productPrice_1);
+    arrLabelPrice.push_back(ui->productPrice_2);
+    arrLabelPrice.push_back(ui->productPrice_3);
+    arrLabelPrice.push_back(ui->productPrice_4);
+    arrLabelPrice.push_back(ui->productPrice_5);
+    arrLabelPrice.push_back(ui->productPrice_6);
+}
+
+void MainWindow::fillArrLabelPicture() {
+    arrLabelPicture.push_back(ui->productPicture_1);
+    arrLabelPicture.push_back(ui->productPicture_2);
+    arrLabelPicture.push_back(ui->productPicture_3);
+    arrLabelPicture.push_back(ui->productPicture_4);
+    arrLabelPicture.push_back(ui->productPicture_5);
+    arrLabelPicture.push_back(ui->productPicture_6);
+}
+
+void MainWindow::fillArrGroupBox() {
+    arrGroupBox.push_back(ui->groupBox_1);
+    arrGroupBox.push_back(ui->groupBox_2);
+    arrGroupBox.push_back(ui->groupBox_3);
+    arrGroupBox.push_back(ui->groupBox_4);
+    arrGroupBox.push_back(ui->groupBox_5);
+    arrGroupBox.push_back(ui->groupBox_6);
+}
+
+
+void MainWindow::fillArrButtonOpenProductWidget() {
+    arrButtonOpenProductWidget.push_back(ui->buttonOpenWidget_1);
+    arrButtonOpenProductWidget.push_back(ui->buttonOpenWidget_2);
+    arrButtonOpenProductWidget.push_back(ui->buttonOpenWidget_3);
+    arrButtonOpenProductWidget.push_back(ui->buttonOpenWidget_4);
+    arrButtonOpenProductWidget.push_back(ui->buttonOpenWidget_5);
+    arrButtonOpenProductWidget.push_back(ui->buttonOpenWidget_6);
+}
+
+void MainWindow::updateProductsMainWindow() {
     for(int i = 0; i < 6; i++) {
-        setInformationSomeProduct(i, arrProductScreen[i]);
+        setInformationSomeProduct(i, arrProductMainWindow[i]);
     }
 }
 
-void MainWindow::setSettingFontName() {
-    ui->groupBox_1->setFont(fontName);
-    ui->groupBox_2->setFont(fontName);
-    ui->groupBox_3->setFont(fontName);
-    ui->groupBox_4->setFont(fontName);
-    ui->groupBox_5->setFont(fontName);
-    ui->groupBox_6->setFont(fontName);
+void MainWindow::fillAllWidget() {
+    fillArrLabelPicture();
+    fillArrLabelPrice();
+    fillArrButtonOpenProductWidget();
+    fillArrGroupBox();
 }
 
-void MainWindow::setSettingFontPrice() {
-    ui->productPrice_1->setFont(fontPrice);
-    ui->productPrice_2->setFont(fontPrice);
-    ui->productPrice_3->setFont(fontPrice);
-    ui->productPrice_4->setFont(fontPrice);
-    ui->productPrice_5->setFont(fontPrice);
-    ui->productPrice_6->setFont(fontPrice);
+void MainWindow::setSettingAllWidget() {
+    ProjectAppearance::setSettingFontPrice(arrLabelPrice);
+    ProjectAppearance::setSettingButtonsOpenProductWidget(arrButtonOpenProductWidget);
+    ProjectAppearance::setSettingFontName(arrGroupBox);
+    ProjectAppearance::setSettingFontPicture(arrLabelPicture);
 }
 
-void MainWindow::setSettingButtonsOpenProductWidget() {
-    ui->buttonOpenWidget_1->setStyleSheet("QPushButton{background: transparent;}");
-    ui->buttonOpenWidget_2->setStyleSheet("QPushButton{background: transparent;}");
-    ui->buttonOpenWidget_3->setStyleSheet("QPushButton{background: transparent;}");
-    ui->buttonOpenWidget_4->setStyleSheet("QPushButton{background: transparent;}");
-    ui->buttonOpenWidget_5->setStyleSheet("QPushButton{background: transparent;}");
-    ui->buttonOpenWidget_6->setStyleSheet("QPushButton{background: transparent;}");
-}
-void MainWindow::updateInformationProduct() {
-    for(int i = numberPage * 6; i < (numberPage + 1) * 6; i++) {
-        arrProductScreen[i % 6] = arrProductMainWindow[i];
-    }
-}
-void MainWindow::setInformationSomeProduct(int numberProduct, Product* product) {
-    switch (numberProduct) {
-    case 0: {
-        setInformationFirstProduct(product);
-        break;
-    }
-    case 1: {
-        setInformationSecondProduct(product);
-        break;
-    }
-    case 2: {
-        setInformationThirdProduct(product);
-        break;
-    }
-    case 3: {
-        setInformationFourthProduct(product);
-        break;
-    }
-    case 4: {
-        setInformationFifthProduct(product);
-        break;
-    }
-    case 5: {
-        setInformationSixthProduct(product);
-        break;
-    }
-    default: {
-
-    }
-    }
+void MainWindow::setInformationSomeProduct(int number, Product* product) {
+    arrGroupBox[number]->setTitle(product->getName());
+    arrLabelPrice[number]->setText(QString::number(product->getBestPrice()));
+    arrLabelPicture[number]->setPixmap(QPixmap(path + DIRECTORY_IMAGE + product->getFileName()));
 }
 
-void MainWindow::setInformationFirstProduct(Product* product) {
-    ui->groupBox_1->setTitle(product->getName());
-    ui->productPrice_1->setText(QString::number(product->getBestPrice()));
-    ui->productPicture_1->setPixmap(product->getPixmap());
-    ui->productPicture_1->setScaledContents(true);
-}
-
-void MainWindow::setInformationSecondProduct(Product* product) {
-    ui->groupBox_2->setTitle(product->getName());
-    ui->productPrice_2->setText(QString::number(product->getBestPrice()));
-    ui->productPicture_2->setPixmap(product->getPixmap());
-    ui->productPicture_2->setScaledContents(true);
-}
-
-void MainWindow::setInformationThirdProduct(Product* product) {
-    ui->groupBox_3->setTitle(product->getName());
-    ui->productPrice_3->setText(QString::number(product->getBestPrice()));
-    ui->productPicture_3->setPixmap(product->getPixmap());
-    ui->productPicture_3->setScaledContents(true);
-}
-
-void MainWindow::setInformationFourthProduct(Product* product) {
-    ui->groupBox_4->setTitle(product->getName());
-    ui->productPrice_4->setText(QString::number(product->getBestPrice()));
-    ui->productPicture_4->setPixmap(product->getPixmap());
-    ui->productPicture_4->setScaledContents(true);
-}
-
-void MainWindow::setInformationFifthProduct(Product* product) {
-    ui->groupBox_5->setTitle(product->getName());
-    ui->productPrice_5->setText(QString::number(product->getBestPrice()));
-    ui->productPicture_5->setPixmap(product->getPixmap());
-    ui->productPicture_5->setScaledContents(true);
-}
-
-void MainWindow::setInformationSixthProduct(Product* product) {
-    ui->groupBox_6->setTitle(product->getName());
-    ui->productPrice_6->setText(QString::number(product->getBestPrice()));
-    ui->productPicture_6->setPixmap(product->getPixmap());
-    ui->productPicture_6->setScaledContents(true);
-}
-
-
-void MainWindow::on_buttonCollapse_clicked()
-{
-    showMinimized();
-}
-
-
-void MainWindow::on_buttonClose_clicked()
-{
-    close();
-}
-
-void MainWindow::setCorrectFontPrice() {
-    fontPrice.setPointSize(14);
-    fontPrice.setWeight(QFont::Bold);
-}
-
-void MainWindow::setCorrectNamePrice() {
-    fontName.setPointSize(9);
-    fontName.setWeight(QFont::Bold);
-}
-
-void MainWindow::on_buttonBasket_clicked()
-{
-    basketWidget->show();
-}
-
-void MainWindow::on_buttonOpenWidget_1_clicked()
-{
-    productWidget->add(arrProductScreen[0]);
-}
-
-
-void MainWindow::on_buttonAddProduct_6_clicked()
-{
-    basketWidget->addProductBasket(arrProductScreen[5]);
-}
-
-void MainWindow::on_buttonOpenWidget_2_clicked()
-{
-    productWidget->add(arrProductScreen[1]);
-}
-
-void MainWindow::on_buttonOpenWidget_3_clicked()
-{
-    productWidget->add(arrProductScreen[2]);
-}
-
-void MainWindow::on_buttonOpenWidget_4_clicked()
-{
-    productWidget->add(arrProductScreen[3]);
-}
-
-void MainWindow::on_buttonOpenWidget_5_clicked()
-{
-    productWidget->add(arrProductScreen[4]);
-}
-
-void MainWindow::on_buttonOpenWidget_6_clicked()
-{
-    productWidget->add(arrProductScreen[5]);
-}
-
-void MainWindow::setCorrectPathDirectory() {
-    QString buildPath = QCoreApplication::applicationDirPath();
-    for(int i = 0; i < buildPath.size() - sizeElementPathBuildFile; i++) {
-        path += buildPath[i];
-    }
-}
-
-void MainWindow::setFon() {
-    QPalette palette;
-    palette.setBrush(mainWidget->backgroundRole(),QBrush(QPixmap(path + "/Data/Picture/View/fon.jpg")));
-    mainWidget->setPalette(palette);
-    mainWidget->resize(1920,1080);
-    mainWidget->setAutoFillBackground(true);
-}
-
-void MainWindow::changeLabelPage() {
-    ui->labelNumberPage->setText(QString::number(numberPage + 1) + " / " + QString::number(numberAllPage + 1));
-}
-
-void MainWindow::nextPage() {
-    if(numberPage < numberAllPage) {
-        numberPage++;
-        updateMainWindowProductInformation();
-    }
-}
-
-void MainWindow::previosPage() {
-    if(numberPage > 0) {
-        numberPage--;
-        updateMainWindowProductInformation();
-    }
-}
-
-void MainWindow::updateMainWindowProductInformation() {
-    changeLabelPage();
-    updateInformationProduct();
-    setProductInformationMainWindow();
-}
 
 void MainWindow::on_buttonAddProduct_1_clicked()
 {
-    basketWidget->addProductBasket(arrProductScreen[0]);
+    basketWidget->addProductBasket(arrProductMainWindow[0]);
 }
 
 void MainWindow::on_buttonAddProduct_2_clicked()
 {
-    basketWidget->addProductBasket(arrProductScreen[1]);
+    basketWidget->addProductBasket(arrProductMainWindow[1]);
 }
 
 void MainWindow::on_buttonAddProduct_3_clicked()
 {
-    basketWidget->addProductBasket(arrProductScreen[2]);
+    basketWidget->addProductBasket(arrProductMainWindow[2]);
 }
 
 void MainWindow::on_buttonAddProduct_4_clicked()
 {
-    basketWidget->addProductBasket(arrProductScreen[3]);
+    basketWidget->addProductBasket(arrProductMainWindow[3]);
 }
 
 void MainWindow::on_buttonAddProduct_5_clicked()
 {
-    basketWidget->addProductBasket(arrProductScreen[4]);
+    basketWidget->addProductBasket(arrProductMainWindow[4]);
+}
+
+void MainWindow::updateDataMainWindow() {
+    for(int i = numberPage * 6; i < data->product.size() && i < (numberPage * 6 + 6); i++) {
+        arrProductMainWindow[i % 6] = data->product[i];
+    }
+}
+
+void MainWindow::on_buttonAddProduct_6_clicked()
+{
+    basketWidget->addProductBasket(arrProductMainWindow[5]);
+}
+
+void MainWindow::nextPage() {
+    if(numberPage < numberAllPage - 1) {
+        numberPage++;
+        updatePage();
+    }
+}
+
+void MainWindow::previousPage() {
+    if(numberPage) {
+        numberPage--;
+        updatePage();
+    }
+}
+
+void MainWindow::updatePage() {
+    updateDataMainWindow();
+    updateProductsMainWindow();
+    ui->labelNumberPage->setText(QString::number(numberPage + 1) + "/" + QString::number(numberAllPage));
 }
 
 void MainWindow::on_buttonSearchProduct_clicked()
 {
-    QString search = ui->lineSearch->text();
-    setArrProductMainWindow(search);
-    updateInformationProduct();
-    setProductInformationMainWindow();
+    qDebug() << data->product.size();
+    QString substr = ui->lineSearch->text();
+    data->setProduct("1", "1", substr);
+    numberPage = 0;
+    numberAllPage = data->product.size() / 6;
+    updatePage();
+
+    qDebug() << substr << data->product.size();
 }
 
-void MainWindow::setArrProductMainWindow() {
-    arrProductMainWindow.clear();
-    int i = 0;
-    for(; i < data.getNumberAllProduct(); i++) {
-        arrProductMainWindow.push_back(data.getProduct(i));
-    }
-    if(i % 6 != 5) {
-        double errorArr[7] {};
-        Product* errorProduct;
-        QPixmap errorPicture;
-        errorProduct = new Product(" ", errorArr, errorPicture);
-        for(; i % 6 != 5; i++) {
-            arrProductMainWindow.push_back(errorProduct);
-        }
-        arrProductMainWindow.push_back(errorProduct);
-    }
-}
-
-void MainWindow::setArrProductMainWindow(QString search) {
-    if(search == "") {
-        setArrProductMainWindow();
-    }
-    else {
-    arrProductMainWindow.clear();
-    int i = 0;
-    for(; i < data.getNumberAllProduct(); i++) {
-        if(StringProcessing::searchKMP(data.getProduct(i)->getName(), search)) {
-            arrProductMainWindow.push_back(data.getProduct(i));
-        }
-    }
-    if(arrProductMainWindow.size() % 6 != 5) {
-        double errorArr[7] {};
-        Product* errorProduct;
-        QPixmap errorPicture;
-        errorProduct = new Product(" ", errorArr, errorPicture);
-        for(; arrProductMainWindow.size() % 6 != 5; i++) {
-            arrProductMainWindow.push_back(errorProduct);
-        }
-        arrProductMainWindow.push_back(errorProduct);
-    }
-    }
-}
-
-void MainWindow::on_radioIncreasingPrice_clicked()
+void MainWindow::on_buttonOpenWidget_1_clicked()
 {
-    ProductSort::timsort(&arrProductMainWindow);
-    updateInformationProduct();
+    productWidget->add(arrProductMainWindow[0]);
+}
 
-    setProductInformationMainWindow();
-    int i = arrProductMainWindow.size();
-    if(i % 6 != 5) {
-        double errorArr[7] {};
-        Product* errorProduct;
-        QPixmap errorPicture;
-        errorProduct = new Product(" ", errorArr, errorPicture);
-        for(; i % 6 != 5; i++) {
-            arrProductMainWindow.push_back(errorProduct);
-        }
-        arrProductMainWindow.push_back(errorProduct);
-    }
+
+void MainWindow::on_buttonOpenWidget_2_clicked()
+{
+    productWidget->add(arrProductMainWindow[1]);
+}
+
+
+void MainWindow::on_buttonOpenWidget_3_clicked()
+{
+    productWidget->add(arrProductMainWindow[2]);
+}
+
+
+void MainWindow::on_buttonOpenWidget_4_clicked()
+{
+    productWidget->add(arrProductMainWindow[3]);
+}
+
+
+void MainWindow::on_buttonOpenWidget_5_clicked()
+{
+    productWidget->add(arrProductMainWindow[4]);
+}
+
+
+
+void MainWindow::on_buttonOpenWidget_6_clicked()
+{
+    productWidget->add(arrProductMainWindow[5]);
 }
 

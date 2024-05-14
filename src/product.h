@@ -7,24 +7,17 @@
 class Product
 {
 public:
-    Product(QString name, double* arrCostProduct, QPixmap pixmap);
+    Product(QString name, double* arrCost, QString file, QString category, QString subcategory);
     double* getArrPrice();
     double getBestPrice();
     QString getName();
-    QPixmap getPixmap();
+    QPixmap getPicture();
+    QString getFileName();
 private:
-    QString nameProduct;
-    enum Shops {
-        ShopEmall,
-        Shop21vek,
-        ShopSosedi,
-        ShopSanta,
-        ShopCorona,
-        ShopEvroopt,
-        ShopGippo,
-        ShopGreen
-    };
-    double arrCostProduct[7] {};
+    QString file;
+    QString name;
+    QString category;
+    double* arrCost;
     QPixmap picture;
 };
 

@@ -3,15 +3,14 @@
 
 #include <QMainWindow>
 
-#include <QFont>
 #include <QWidget>
 #include <QDir>
-#include <QGroupBox>
+#include <QSignalMapper>
 #include "basketwidget.h"
 #include "productwidget.h"
 #include "product.h"
-#include "database.h"
-#include "dataprocessing.h"
+#include "data.h"
+#include "projectappearance.h"
 #include "stringprocessing.h"
 #include "productsort.h"
 
@@ -30,49 +29,31 @@ private:
     QWidget *mainWidget;
     ProductWidget *productWidget;
     BasketWidget *basketWidget;
-    QFont fontPrice;
-    QString path = "";
-    DataBase* base = new DataBase();
-    QFont fontName;
-    DataProcessing data;
-    Ui::MainWindow *ui;
+    const QString DIRECTORY_IMAGE = "/image/";
+    Data* data = new Data();
+    Product* arrProductMainWindow[6];
     int numberPage;
     int numberAllPage;
-    Product* arrProductScreen[6] {};
-    QVector<Product*> arrProductMainWindow;
-    int const sizeElementPathBuildFile = 48;
+    void updatePage();
+    QString path;
+    QVector<QLabel*> arrLabelPrice;
+    QVector<QLabel*> arrLabelPicture;
+    QVector<QPushButton*> arrButtonOpenProductWidget;
+    QVector<QGroupBox*> arrGroupBox;
+    Ui::MainWindow *ui;
 private slots:
-    void setInformationFirstProduct(Product* product);
-    void setInformationSecondProduct(Product* product);
-    void setInformationThirdProduct(Product* product);
-    void setInformationFourthProduct(Product* product);
-    void setInformationFifthProduct(Product* product);
-    void setInformationSixthProduct(Product* product);
-    void setInformationSomeProduct(int numberProduct, Product* product);
-    void setCorrectFontPrice();
-    void setCorrectNamePrice();
-    void setCorrectPathDirectory();
-    void setFon();
-    void setArrProductMainWindow();
-    void setArrProductMainWindow(QString search);
-    void setProductInformationMainWindow();
-    void setSettingFontPrice();
-    void setSettingButtonsOpenProductWidget();
-    void setSettingFontName();
-    void updateMainWindowProductInformation();
-    void changeLabelPage();
-    void updateInformationProduct();
-    void on_buttonCollapse_clicked();
-    void on_buttonClose_clicked();
-    void on_buttonBasket_clicked();
-    void on_buttonOpenWidget_1_clicked();
-    void on_buttonOpenWidget_2_clicked();
-    void on_buttonOpenWidget_3_clicked();
-    void on_buttonOpenWidget_4_clicked();
-    void on_buttonOpenWidget_5_clicked();
-    void on_buttonOpenWidget_6_clicked();
+    void setNewSubcategory(int number);
+    void fillAllWidget();
+    void fillArrLabelPrice();
+    void fillArrLabelPicture();
+    void fillArrButtonOpenProductWidget();
+    void fillArrGroupBox();
     void nextPage();
-    void previosPage();
+    void previousPage();
+    void setSettingAllWidget();
+    void updateDataMainWindow();
+    void updateProductsMainWindow();
+    void setInformationSomeProduct(int number, Product* product);
     void on_buttonAddProduct_1_clicked();
     void on_buttonAddProduct_2_clicked();
     void on_buttonAddProduct_3_clicked();
@@ -80,6 +61,11 @@ private slots:
     void on_buttonAddProduct_5_clicked();
     void on_buttonAddProduct_6_clicked();
     void on_buttonSearchProduct_clicked();
-    void on_radioIncreasingPrice_clicked();
+    void on_buttonOpenWidget_1_clicked();
+    void on_buttonOpenWidget_2_clicked();
+    void on_buttonOpenWidget_3_clicked();
+    void on_buttonOpenWidget_4_clicked();
+    void on_buttonOpenWidget_5_clicked();
+    void on_buttonOpenWidget_6_clicked();
 };
 #endif // MAINWINDOW_H

@@ -1,6 +1,8 @@
 QT += core gui
 QT += widgets
 QT += sql
+QT += core
+QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,28 +14,27 @@ CONFIG += c++11
 
 SOURCES += \
     basketwidget.cpp \
-    database.cpp \
+    data.cpp \
     main.cpp \
     mainwindow.cpp \
     product.cpp \
     productsort.cpp \
     productwidget.cpp \
-    stringprocessing.cpp \
-    dataprocessing.cpp
+    projectappearance.cpp \
+    stringprocessing.cpp
 
 HEADERS += \
     basketwidget.h \
-    database.h \
+    data.h \
     mainwindow.h \
     product.h \
     productsort.h \
     productwidget.h \
-    stringprocessing.h \
-    dataprocessing.h
+    projectappearance.h \
+    stringprocessing.h
 
 FORMS += \
     basketwidget.ui \
-    database.ui \
     mainwindow.ui \
     productwidget.ui
 

@@ -22,6 +22,7 @@ BasketWidget::BasketWidget(QWidget *parent)
 
 
 void BasketWidget::addProductBasket(Product* product) {
+    qDebug() << 12;
        if(product->getName() != " " && product->getBestPrice() != 0) {
         ui->tableWidget->insertRow(ui->tableWidget->rowCount());
         QTableWidgetItem *nameProductItem = new QTableWidgetItem;
@@ -32,7 +33,7 @@ void BasketWidget::addProductBasket(Product* product) {
                                  new QTableWidgetItem(QString::number(product->getArrPrice()[i])));
         }
         QTableWidgetItem* item = new QTableWidgetItem();
-        item->setData(Qt::DecorationRole,product->getPixmap().scaled(120,120,Qt::IgnoreAspectRatio));  // 50-ширина 50-длина
+        item->setData(Qt::DecorationRole,product->getPicture().scaled(120,120,Qt::IgnoreAspectRatio));  // 50-ширина 50-длина
         ui->tableWidget->setItem(numberProductOnBasket, 0, item);
         numberProductOnBasket++;
     }

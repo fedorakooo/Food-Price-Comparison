@@ -6,6 +6,9 @@ ProductWidget::ProductWidget(QWidget *parent) :
     ui(new Ui::ProductWidget)
 {
     ui->setupUi(this);
+
+    ui->label->setAlignment(Qt::AlignCenter);
+
     this->setWindowFlags(Qt::WindowStaysOnTopHint |
                          Qt::WindowSystemMenuHint |
                          Qt::FramelessWindowHint|
@@ -23,8 +26,11 @@ void ProductWidget::add(Product* product) {
         ui->labelPriceFifthShop->setText(QString::number(product->getArrPrice()[4]));
         ui->labelPriceSixthShop->setText(QString::number(product->getArrPrice()[5]));
         ui->labelPriceSeventhShop->setText(QString::number(product->getArrPrice()[6]));
-        ui->label->setPixmap(product->getPixmap());
-        ui->label->setScaledContents(true);
+        QPixmap picture = product->getPicture();
+        picture = picture.scaled(ui->label->size(), Qt::KeepAspectRatio);
+
+        ui->label->setPixmap(picture);
+
         this->move(movingWidgetXCentre,movingWidgetYCentre);
         this->show();
     }
