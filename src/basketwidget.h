@@ -2,7 +2,13 @@
 #define BASKETWIDGET_H
 
 #include <QWidget>
+#include <QPushButton>
 #include "product.h"
+#include <QStandardItemModel>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QTableWidget>
+#include <QGraphicsPixmapItem>
 
 namespace Ui {
 class BasketWidget;
@@ -17,8 +23,16 @@ public:
 public slots:
     void addProductBasket(Product* product);
 private:
+    int arrNoProduct[7] {};
+    QStandardItemModel *model = new QStandardItemModel;
     int numberProductOnBasket;
+    double arrFullPrice[7] {};
     Ui::BasketWidget *ui;
+private slots:
+    void deleteProduct();
+    void deleteBasket();
+    void updateInfo();
+
 };
 
 #endif // BASKETWIDGET_H

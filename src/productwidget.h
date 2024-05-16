@@ -3,7 +3,9 @@
 
 #include <QWidget>
 #include <QFrame>
+#include <QLabel>
 #include <QMouseEvent>
+#include <QPushButton>
 #include "product.h"
 
 namespace Ui {
@@ -20,10 +22,10 @@ public:
     ~ProductWidget();
     void add(Product* product);
 private:
-    int const movingWidgetXCentre = 200;
-    int const movingWidgetYCentre = 100;
+    void setPrice(QLabel* label, double price);
+    int const MOVING_WIDGET_X_CENTRE = 200;
+    int const MOVING_WIDGET_Y_CENTRE = 100;
     Ui::ProductWidget *ui;
-    static const int RUN = 64;
 };
 
 #endif // PRODUCTWIDGET_H

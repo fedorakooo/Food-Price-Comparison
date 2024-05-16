@@ -1,5 +1,9 @@
 #include "product.h"
 
+Product::Product() {
+
+}
+
 Product::Product(QString name, double* arrCost, QString file, QString category, QString subcategory) {
     this->name = name;
     this->arrCost = arrCost;

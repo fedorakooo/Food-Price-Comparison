@@ -5,6 +5,8 @@ StringProcessing::StringProcessing() {
 }
 
 bool StringProcessing::searchKMP(QString line, QString subline) {
+    line = line.toLower();
+    subline = subline.toLower();
     QVector<int> arrFunctionPrefixSuffix;
     for(int i = 1; i < subline.size() + 1; i++) {
         QString sublineCheckPostfixSuffix = subline.mid(0, i);

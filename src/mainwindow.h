@@ -2,9 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include <QButtonGroup>
 #include <QWidget>
 #include <QDir>
+#include <QRadioButton>
 #include <QSignalMapper>
 #include "basketwidget.h"
 #include "productwidget.h"
@@ -30,10 +31,11 @@ private:
     ProductWidget *productWidget;
     BasketWidget *basketWidget;
     const QString DIRECTORY_IMAGE = "/image/";
-    Data* data = new Data();
+    Data* data;
     Product* arrProductMainWindow[6];
     int numberPage;
     int numberAllPage;
+    QString search;
     void updatePage();
     QString path;
     QVector<QLabel*> arrLabelPrice;
@@ -41,8 +43,12 @@ private:
     QVector<QPushButton*> arrButtonOpenProductWidget;
     QVector<QGroupBox*> arrGroupBox;
     Ui::MainWindow *ui;
+    QString category;
+    QString subcategory;
+    int numberSort;
 private slots:
-    void setNewSubcategory(int number);
+    void newCategory(int number);
+    void newSubcategory(int number);
     void fillAllWidget();
     void fillArrLabelPrice();
     void fillArrLabelPicture();
@@ -67,5 +73,12 @@ private slots:
     void on_buttonOpenWidget_4_clicked();
     void on_buttonOpenWidget_5_clicked();
     void on_buttonOpenWidget_6_clicked();
+    void on_radioIncreasingName_clicked();
+    void on_radioReductionName_clicked();
+    void on_radioIncreasingPrice_clicked();
+    void on_radioReductionPrice_clicked();
+    void on_pushButton_clicked();
+    void sortProduct();
+    void on_radioPopularProduct_clicked();
 };
 #endif // MAINWINDOW_H

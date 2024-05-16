@@ -67,6 +67,11 @@
      <string>Green</string>
     </property>
    </column>
+   <column>
+    <property name="text">
+     <string>Удалить</string>
+    </property>
+   </column>
   </widget>
  </widget>
  <resources/>

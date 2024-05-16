@@ -7,6 +7,7 @@
 class Product
 {
 public:
+    Product();
     Product(QString name, double* arrCost, QString file, QString category, QString subcategory);
     double* getArrPrice();
     double getBestPrice();
