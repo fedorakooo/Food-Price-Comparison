@@ -2,8 +2,7 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    ,numberPage(0), numberSort(0), ui(new Ui::MainWindow), search("")
+    : QMainWindow(parent),numberPage(0), numberSort(0), ui(new Ui::MainWindow), search("")
 {
     mainWidget = new QWidget(this);
     ui->setupUi(this);
@@ -14,14 +13,26 @@ MainWindow::MainWindow(QWidget *parent)
 
     path = QDir::currentPath();
 
+    wordList = new QStringList();
     fillAllWidget();
     setSettingAllWidget();
+
+    QPixmap background("./image/fon");
+    QPalette palette;
+    palette.setBrush(QPalette::Window, QBrush(background));
+    this->setPalette(palette);
 
     productWidget = new ProductWidget();
     basketWidget = new BasketWidget();
 
+    QCompleter *completer = new QCompleter(data->getWordList(), this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->lineSearch->setCompleter(completer);
+
+
     category = "Категории";
     subcategory = "Подкатегории";
+
 
     {
         ui->comboBoxCategory->addItem("Категории");
@@ -36,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
         ui->comboBoxSubcategoty->addItem("Подкатегории");
     }
     numberAllPage = data->product.size() / 6;
+
     updatePage();
 
     connect(ui->buttonClose, &QPushButton::clicked, this, &MainWindow::close);
@@ -136,14 +148,14 @@ void MainWindow::newCategory(int number) {
         }
     }
     numberPage = 0;
-    data->setProduct(category, subcategory);
+    data->setPopularProduct(category, subcategory);
     sortProduct();
     updatePage();
 }
 
 void MainWindow::newSubcategory(int number) {
     subcategory = ui->comboBoxSubcategoty->currentText();
-    data->setProduct(category, subcategory);
+    data->setPopularProduct(category, subcategory);
     numberPage = 0;
     sortProduct();
     updatePage();
@@ -202,7 +214,18 @@ void MainWindow::fillAllWidget() {
     fillArrLabelPrice();
     fillArrButtonOpenProductWidget();
     fillArrGroupBox();
+    fillArrButtonAddProductBasket();
 }
+
+void MainWindow::fillArrButtonAddProductBasket() {
+    arrButtonAddProductBasket.push_back(ui->buttonAddProduct_1);
+    arrButtonAddProductBasket.push_back(ui->buttonAddProduct_2);
+    arrButtonAddProductBasket.push_back(ui->buttonAddProduct_3);
+    arrButtonAddProductBasket.push_back(ui->buttonAddProduct_4);
+    arrButtonAddProductBasket.push_back(ui->buttonAddProduct_5);
+    arrButtonAddProductBasket.push_back(ui->buttonAddProduct_6);
+}
+
 
 void MainWindow::setSettingAllWidget() {
     ProjectAppearance::setSettingFontPrice(arrLabelPrice);
@@ -213,45 +236,64 @@ void MainWindow::setSettingAllWidget() {
 
 void MainWindow::setInformationSomeProduct(int number, Product* product) {
     arrGroupBox[number]->setTitle(product->getName());
-    arrLabelPrice[number]->setText(QString::number(product->getBestPrice()));
+    QString bestPrice = StringProcessing::additionPrice(QString::number(product->getBestPrice()));
+    if(bestPrice == "-1") {
+        arrLabelPrice[number]->setText("");
+    }
+    else {
+        arrLabelPrice[number]->setText(bestPrice);
+    }
     arrLabelPicture[number]->setPixmap(QPixmap(path + DIRECTORY_IMAGE + product->getFileName()));
 }
 
 
 void MainWindow::on_buttonAddProduct_1_clicked()
 {
-    basketWidget->addProductBasket(arrProductMainWindow[0]);
+    if(arrProductMainWindow[0]->getName() != ""){
+        basketWidget->addProductBasket(arrProductMainWindow[0]);
+    }
 }
 
 void MainWindow::on_buttonAddProduct_2_clicked()
 {
-    basketWidget->addProductBasket(arrProductMainWindow[1]);
+    if(arrProductMainWindow[1]->getName() != ""){
+        basketWidget->addProductBasket(arrProductMainWindow[1]);
+    }
 }
 
 void MainWindow::on_buttonAddProduct_3_clicked()
 {
-    basketWidget->addProductBasket(arrProductMainWindow[2]);
+    if(arrProductMainWindow[2]->getName() != "")  {
+        basketWidget->addProductBasket(arrProductMainWindow[2]);
+    }
 }
 
 void MainWindow::on_buttonAddProduct_4_clicked()
 {
-    basketWidget->addProductBasket(arrProductMainWindow[3]);
+    if(arrProductMainWindow[3]->getName() != ""){
+        basketWidget->addProductBasket(arrProductMainWindow[3]);
+    }
 }
 
 void MainWindow::on_buttonAddProduct_5_clicked()
 {
-    basketWidget->addProductBasket(arrProductMainWindow[4]);
+    if(arrProductMainWindow[4]->getName() != "") {
+        basketWidget->addProductBasket(arrProductMainWindow[4]);
+    }
 }
 
 void MainWindow::updateDataMainWindow() {
     for(int i = numberPage * 6; i < data->product.size() && i < (numberPage * 6 + 6); i++) {
         arrProductMainWindow[i % 6] = data->product[i];
     }
+
 }
 
 void MainWindow::on_buttonAddProduct_6_clicked()
 {
-    basketWidget->addProductBasket(arrProductMainWindow[5]);
+    if(arrProductMainWindow[5]->getName() != "") {
+      basketWidget->addProductBasket(arrProductMainWindow[5]);
+    }
 }
 
 void MainWindow::nextPage() {
@@ -271,14 +313,42 @@ void MainWindow::previousPage() {
 void MainWindow::updatePage() {
     numberAllPage = data->product.size() / 6;
     updateDataMainWindow();
+    if(data->product.isEmpty()) {
+        for(int i = 0; i < 6; i++) {
+            arrProductMainWindow[i] = new Product();
+        }
+    }
     updateProductsMainWindow();
+    updateVisibleButton();
+    if(numberAllPage == 0)
+        numberAllPage++;
     ui->labelNumberPage->setText(QString::number(numberPage + 1) + "/" + QString::number(numberAllPage));
+}
+
+void MainWindow::updateVisibleButton() {
+    for(int i = 0; i < 6; i++) {
+        if(arrProductMainWindow[i]->getName() == "") {
+            arrGroupBox[i]->setVisible(false);
+        }
+        else {
+            arrGroupBox[i]->setVisible(true);
+        }
+    }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+    if(event->key() == 16777220) {
+        on_buttonSearchProduct_clicked();
+    }
 }
 
 void MainWindow::on_buttonSearchProduct_clicked()
 {
-    search = ui->lineSearch->text();
-    data->setProduct(category, subcategory, search);
+    QString newSearch = ui->lineSearch->text();
+    if(newSearch != search) {
+        search = newSearch;
+        data->setProduct(category, subcategory, search);
+    }
     numberPage = 0;
     numberAllPage = data->product.size() / 6;
     updatePage();
@@ -286,67 +356,95 @@ void MainWindow::on_buttonSearchProduct_clicked()
 
 void MainWindow::on_buttonOpenWidget_1_clicked()
 {
-    productWidget->add(arrProductMainWindow[0]);
+    if(arrProductMainWindow[0]->getName() != "") {
+        productWidget->add(arrProductMainWindow[0]);
+    }
 }
 
 void MainWindow::on_buttonOpenWidget_2_clicked()
 {
-    productWidget->add(arrProductMainWindow[1]);
+    if(arrProductMainWindow[1]->getName() != "") {
+        productWidget->add(arrProductMainWindow[1]);
+    }
 }
 
 void MainWindow::on_buttonOpenWidget_3_clicked()
 {
-    productWidget->add(arrProductMainWindow[2]);
+    if(arrProductMainWindow[2]->getName() != "") {
+        productWidget->add(arrProductMainWindow[2]);
+    }
 }
 
 void MainWindow::on_buttonOpenWidget_4_clicked()
 {
-    productWidget->add(arrProductMainWindow[3]);
+    if(arrProductMainWindow[3]->getName() != "") {
+        productWidget->add(arrProductMainWindow[3]);
+    }
 }
 
 void MainWindow::on_buttonOpenWidget_5_clicked()
 {
-    productWidget->add(arrProductMainWindow[4]);
+    if(arrProductMainWindow[4]->getName() != "") {
+        productWidget->add(arrProductMainWindow[4]);
+    }
 }
 
 void MainWindow::on_buttonOpenWidget_6_clicked()
 {
-    productWidget->add(arrProductMainWindow[5]);
+    if(arrProductMainWindow[5]->getName() != "") {
+        productWidget->add(arrProductMainWindow[5]);
+    }
 }
 
 void MainWindow::on_radioPopularProduct_clicked()
 {
     numberSort = 0;
-    data->setPopularProduct(category, subcategory);
+    if(search == "") {
+        data->setPopularProduct(category, subcategory);
+    }
+    else {
+        data->setProduct(category, subcategory, search);
+    }
     updatePage();
 }
 
 void MainWindow::on_radioIncreasingName_clicked()
 {
+    data->deleteNoProduct();
     numberSort = 1;
+    numberPage = 0;
     ProductSort::threeWayQuickSortIncrease(&data->product, 0, data->product.size() - 1);
+    data->doProductMultiples();
     updatePage();
 }
 
 void MainWindow::on_radioReductionName_clicked()
 {
+    data->deleteNoProduct();
     numberSort = 2;
+    numberPage = 0;
     ProductSort::threeWayQuickSortDecrease(&data->product, 0, data->product.size() - 1);
+    data->doProductMultiples();
     updatePage();
 }
 
 void MainWindow::on_radioIncreasingPrice_clicked()
 {
+    data->deleteNoProduct();
     numberSort = 3;
     ProductSort::timsortIncrease(&(data->product));
+    data->doProductMultiples();
     updatePage();
 }
 
 
 void MainWindow::on_radioReductionPrice_clicked()
 {
+    data->deleteNoProduct();
     numberSort = 4;
+    numberPage = 0;
     ProductSort::timsortDecrease(&(data->product));
+    data->doProductMultiples();
     updatePage();
 }
 
@@ -354,6 +452,7 @@ void MainWindow::on_pushButton_clicked()
 {
     search = "";
     ui->lineSearch->clear();
+    numberPage = 0;
     data->setPopularProduct(category, subcategory);
     updatePage();
 }

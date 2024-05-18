@@ -38,3 +38,23 @@ bool StringProcessing::searchKMP(QString line, QString subline) {
     }
     return false;
 }
+
+QString StringProcessing::additionPrice(QString price) {
+    bool isDot = false;
+    int i = 0;
+    for(; i < price.size(); i++) {
+        if(price[i] == '.'){
+            isDot = true;
+            break;
+        }
+    }
+    qDebug() << price.size();
+    if(isDot && price.size() - i <= 2) {
+        return price + "0";
+    }
+    else if(!isDot){
+        return price + ".00";
+    }
+    return price;
+}
+

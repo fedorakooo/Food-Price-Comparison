@@ -5,12 +5,14 @@
 #include <QButtonGroup>
 #include <QWidget>
 #include <QDir>
+#include <QPalette>
 #include <QRadioButton>
 #include <QSignalMapper>
 #include "basketwidget.h"
 #include "productwidget.h"
 #include "product.h"
 #include "data.h"
+#include <QCompleter>
 #include "projectappearance.h"
 #include "stringprocessing.h"
 #include "productsort.h"
@@ -27,6 +29,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private:
+    QStringList* wordList;
     QWidget *mainWidget;
     ProductWidget *productWidget;
     BasketWidget *basketWidget;
@@ -41,18 +44,21 @@ private:
     QVector<QLabel*> arrLabelPrice;
     QVector<QLabel*> arrLabelPicture;
     QVector<QPushButton*> arrButtonOpenProductWidget;
+    QVector<QPushButton*> arrButtonAddProductBasket;
     QVector<QGroupBox*> arrGroupBox;
     Ui::MainWindow *ui;
     QString category;
     QString subcategory;
     int numberSort;
 private slots:
+    void updateVisibleButton();
     void newCategory(int number);
     void newSubcategory(int number);
     void fillAllWidget();
     void fillArrLabelPrice();
     void fillArrLabelPicture();
     void fillArrButtonOpenProductWidget();
+    void fillArrButtonAddProductBasket();
     void fillArrGroupBox();
     void nextPage();
     void previousPage();
@@ -80,5 +86,7 @@ private slots:
     void on_pushButton_clicked();
     void sortProduct();
     void on_radioPopularProduct_clicked();
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 };
 #endif // MAINWINDOW_H

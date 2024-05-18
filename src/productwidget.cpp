@@ -42,5 +42,5 @@ ProductWidget::~ProductWidget()
 }
 
 void ProductWidget::setPrice(QLabel* label, double price) {
-    label->setText((price == -1) ? "—" : QString::number(price));
+    label->setText((price == -1) ? "—" : StringProcessing::additionPrice(QString::number(price)));
 }

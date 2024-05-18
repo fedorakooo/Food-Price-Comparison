@@ -1,7 +1,6 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
-
-#include <QString>
+#include <iostream>
 #include <QPixmap>
 
 class Product
@@ -14,7 +13,9 @@ public:
     QString getName();
     QPixmap getPicture();
     QString getFileName();
+    bool getIsProduct();
 private:
+    bool isProduct;
     QString file;
     QString name;
     QString category;

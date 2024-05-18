@@ -45,7 +45,6 @@ void BasketWidget::addProductBasket(Product* product) {
         }
         QPushButton* button = new QPushButton("Удалить");
         ui->tableWidget->setIndexWidget(ui->tableWidget->model()->index(numberProductOnBasket + 1, 9), button);
-        QTableWidgetItem* item = new QTableWidgetItem();
         QPixmap pixmap = product->getPicture().scaled(120,120, Qt::KeepAspectRatio);
         QTableWidgetItem *itemPicture = new QTableWidgetItem;
         itemPicture->setData(Qt::DecorationRole, pixmap);
@@ -92,7 +91,7 @@ void BasketWidget::updateInfo() {
     QTableWidgetItem *nameProductItem = new QTableWidgetItem;
     nameProductItem->setText("Информация о всех продуктах");
     ui->tableWidget->setItem(0,1,nameProductItem);
-    for(int i = 0; i < 7; i++) {
+    for(int i = 0; i < NUMBER_CATEGORY; i++) {
         if(arrNoProduct[i] != 0) {
             ui->tableWidget->setItem(0, 2 + i,
                                      new QTableWidgetItem("-"));

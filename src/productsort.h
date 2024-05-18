@@ -1,10 +1,7 @@
 #ifndef PRODUCTSORT_H
 #define PRODUCTSORT_H
 
-#include <QVector>
 #include "product.h"
-#include <iostream>
-#include <QDebug>
 
 class ProductSort
 {

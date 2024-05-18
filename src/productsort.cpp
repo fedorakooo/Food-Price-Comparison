@@ -64,7 +64,7 @@ void ProductSort::mergeIncrease(QVector<Product*> *array, int start_index, int m
 
 void ProductSort::timsortIncrease(QVector<Product*> *array)
 {
-    while(!array->isEmpty() && array->back()->getBestPrice() == 0) {
+    while(!array->isEmpty() && !array->back()->getIsProduct()) {
         array->pop_back();
     }
 
@@ -200,16 +200,15 @@ void ProductSort::threeWayQuickSortIncrease(QVector<Product*> *array, int low, i
     threeWayQuickSortIncrease(array, gt + 1, high);
 }
 
-
 void ProductSort::threeWayQuickSortDecrease(QVector<Product*> *array, int low, int high) {
     if (low >= high) return;
-
+    while(!array->isEmpty() && array->back()->getBestPrice() == -1) {
+        array->pop_back();
+    }
     QString pivot = array->at(low)->getName();
-
     int lt = low;
     int gt = high;
     int i = low + 1;
-
     while (i <= gt) {
         if (array->at(i)->getName() > pivot) {
             std::swap((*array)[i], (*array)[lt]);

@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QPushButton>
+#include "stringprocessing.h"
 #include "product.h"
 
 namespace Ui {
@@ -22,6 +23,7 @@ public:
     ~ProductWidget();
     void add(Product* product);
 private:
+    QVector<QLabel*> arrPrice;
     void setPrice(QLabel* label, double price);
     int const MOVING_WIDGET_X_CENTRE = 200;
     int const MOVING_WIDGET_Y_CENTRE = 100;

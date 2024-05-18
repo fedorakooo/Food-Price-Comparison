@@ -1,5 +1,4 @@
 #include "data.h"
-#include "qregularexpression.h"
 
 Data::Data() {
     db = QSqlDatabase::addDatabase("QSQLITE");
@@ -53,7 +52,7 @@ void Data::setProduct(QString _category, QString _subcategory) {
             int start = it->second.first;
             int i = 0;
             int end = it->second.second;
-            while (start < end && i < 100) {
+            while (start < end && i < 42) {
                 i++;
                 query->exec("SELECT * FROM Products WHERE id = " + QString::number(start));
                 query->next();
@@ -75,7 +74,7 @@ void Data::setProduct(QString _category, QString _subcategory) {
                 product.push_back(new Product(name, price, file, category, subcategory));
                 start++;
             }
-        }
+        }       
     }
     else if(_category != "Категории" && _subcategory != "Подкатегории") {
         query->exec("SELECT * FROM Products WHERE subcategory = '" + _subcategory + "'");
@@ -98,46 +97,20 @@ void Data::setProduct(QString _category, QString _subcategory) {
             product.push_back(new Product(name, price, file, category, subcategory));
         }
     }
+    doProductMultiples();
 }
 
 void Data::setProduct(QString _category, QString _subcategory, QString _substr) {
-    product.clear();
-    if(_category == "Категории") {
-        query->exec("SELECT * FROM Products");
-        while (query->next()) {
-            QString name = query->value(1).toString();
-            if(StringProcessing::searchKMP(name, _substr)){
-                QString category = query->value(2).toString();
-                QString subcategory = query->value(3).toString();
-                QString file = query->value(4).toString();
-                double* price = new double[7];
-                for(int i = 0; i < 7; i++) {
-                    bool ok;
-                    QString number = query->value(6+i).toString();
-                    if(number == '-') {
-                        price[i] = -1;
-                    }
-                    else {
-                        price[i] = number.toDouble(&ok);
-                    }
-                }
-                product.push_back(new Product(name, price, file, category, subcategory));
-            }
-        }
+    if(_substr == "") {
+        setPopularProduct(_category, _subcategory);
     }
-    else if(_category != "Категории" && _subcategory == "Подкатегории") {
-        auto it = mapCategory.find(_category);
-        if (it != mapCategory.end()){
-            int start = it->second.first;
-            int i = 0;
-            int end = it->second.second;
-            while (start < end && i < 100) {
-                i++;
-                query->exec("SELECT * FROM Products WHERE id = " + QString::number(start));
-                query->next();
+    else {
+        product.clear();
+        if(_category == "Категории") {
+            query->exec("SELECT * FROM Products");
+            while (query->next()) {
                 QString name = query->value(1).toString();
-                if(StringProcessing::searchKMP(name, _substr))
-                {
+                if(StringProcessing::searchKMP(name, _substr)){
                     QString category = query->value(2).toString();
                     QString subcategory = query->value(3).toString();
                     QString file = query->value(4).toString();
@@ -154,53 +127,87 @@ void Data::setProduct(QString _category, QString _subcategory, QString _substr) 
                     }
                     product.push_back(new Product(name, price, file, category, subcategory));
                 }
-                start++;
             }
         }
-    }
-    else if(_category != "Категории" && _subcategory != "Подкатегории") {
-        query->exec("SELECT * FROM Products WHERE subcategory = '" + _subcategory + "'");
-        while (query->next()) {
-            QString name = query->value(1).toString();
-            if(StringProcessing::searchKMP(name, _substr)) {
-
-                QString category = query->value(2).toString();
-                QString subcategory = query->value(3).toString();
-                QString file = query->value(4).toString();
-                double* price = new double[7];
-                for(int i = 0; i < 7; i++) {
-                    bool ok;
-                    QString number = query->value(6+i).toString();
-                    if(number == '-') {
-                        price[i] = -1;
+        else if(_category != "Категории" && _subcategory == "Подкатегории") {
+            auto it = mapCategory.find(_category);
+            if (it != mapCategory.end()){
+                int start = it->second.first;
+                int i = 0;
+                int end = it->second.second;
+                while (start < end && i < 42) {
+                    i++;
+                    query->exec("SELECT * FROM Products WHERE id = " + QString::number(start));
+                    query->next();
+                    QString name = query->value(1).toString();
+                    if(StringProcessing::searchKMP(name, _substr))
+                    {
+                        QString category = query->value(2).toString();
+                        QString subcategory = query->value(3).toString();
+                        QString file = query->value(4).toString();
+                        double* price = new double[7];
+                        for(int i = 0; i < 7; i++) {
+                            bool ok;
+                            QString number = query->value(6+i).toString();
+                            if(number == '-') {
+                                price[i] = -1;
+                            }
+                            else {
+                                price[i] = number.toDouble(&ok);
+                            }
+                        }
+                        product.push_back(new Product(name, price, file, category, subcategory));
                     }
-                    else {
-                        price[i] = number.toDouble(&ok);
-                    }
+                    start++;
                 }
-                product.push_back(new Product(name, price, file, category, subcategory));
             }
         }
+        else if(_category != "Категории" && _subcategory != "Подкатегории") {
+            query->exec("SELECT * FROM Products WHERE subcategory = '" + _subcategory + "'");
+            while (query->next()) {
+                QString name = query->value(1).toString();
+                if(StringProcessing::searchKMP(name, _substr)) {
+
+                    QString category = query->value(2).toString();
+                    QString subcategory = query->value(3).toString();
+                    QString file = query->value(4).toString();
+                    double* price = new double[7];
+                    for(int i = 0; i < 7; i++) {
+                        bool ok;
+                        QString number = query->value(6+i).toString();
+                        if(number == '-') {
+                            price[i] = -1;
+                        }
+                        else {
+                            price[i] = number.toDouble(&ok);
+                        }
+                    }
+                    product.push_back(new Product(name, price, file, category, subcategory));
+                }
+            }
+        }
+        doProductMultiples();
     }
 }
 
 void Data::setPopularProduct(QString _category, QString _subcategory) {
-    QSet<Product*> set;
+    QSet<int> set;
     product.clear();
     if(_category == "Категории") {
-        while(set.size() < 100) {
+        while(set.size() < 42) {
             int numberCategory = randomGenerator->bounded(0, NUMBER_CATEGORY);
             int numberSubcategory = randomGenerator->bounded(0, ARR_SIZE_CATEGORY[numberCategory]);
             QString subcategory = ArrSubcategory[numberCategory][numberSubcategory];
             int numberRandom = randomGenerator->bounded(0, RANGE);
-            query->exec("SELECT * FROM Products WHERE subcategory = '" + subcategory + "'");
+            query->exec("SELECT id FROM Products WHERE subcategory = '" + subcategory + "'");
             query->next();
-            int numberFirstElement = query->value(0).toInt();
-            numberFirstElement += numberRandom;
-            query->exec("SELECT * FROM Products WHERE id = " + QString::number(numberFirstElement));
-            set.insert(getProductQuety());
+            int numberFirstElement = query->value(0).toInt() + numberRandom;
+            set.insert(numberFirstElement);
         }
-        product = QVector(set.begin(), set.end());
+        for (QSet<int>::iterator it = set.begin(); it != set.end(); ++it) {
+            query->exec("SELECT * FROM Products WHERE id = " + QString::number(*it));
+            product.push_back(getProductFromData());
+        }
     }
     else if(_category != "Категории" && _subcategory == "Подкатегории") {
         auto it = mapCategory.find(_category);
@@ -218,21 +225,35 @@ void Data::setPopularProduct(QString _category, QString _subcategory) {
                     int numberRandom = randomGenerator->bounded(0, RANGE);
                     query->exec("SELECT * FROM Products WHERE subcategory = '" + subcategory + "'");
                     query->next();
-                    int numberFirstElement = query->value(0).toInt();
-                    numberFirstElement += numberRandom;
-                    query->exec("SELECT * FROM Products WHERE id = " + QString::number(numberFirstElement));
-                    set.insert(getProductQuety());
+                    int numberFirstElement = query->value(0).toInt() + numberRandom;
+                    set.insert(numberFirstElement);
                 }
-                product = QVector(set.begin(), set.end());
             }
+        }
+        for (QSet<int>::iterator it = set.begin(); it != set.end(); ++it) {
+            query->exec("SELECT * FROM Products WHERE id = " + QString::number(*it));
+            product.push_back(getProductFromData());
         }
     }
     else if(_category != "Категории" && _subcategory != "Подкатегории") {
         setProduct(_category, _subcategory);
     }
+    doProductMultiples();
 }
 
-Product* Data::getProductQuety() {
+void Data::doProductMultiples() {
+    while(product.size() % 6 != 0) {
+        product.push_back(new Product());
+    }
+}
+
+void Data::deleteNoProduct() {
+    while(!product.isEmpty() && product.back()->getBestPrice() == -1) {
+        product.pop_back();
+    }
+}
+
+Product* Data::getProductFromData() {
     query->next();
     QString name = query->value(1).toString();
     QString category = query->value(2).toString();
@@ -249,10 +270,8 @@ Product* Data::getProductQuety() {
             price[i] = number.toDouble(&ok);
         }
     }
-    return (new Product(name, price, file, category, subcategory));
+    return new Product(name, price, file, category, subcategory);
 }
-
-
 int Data::getNumberNameCategory(QString category) {
     for(int i = 0; i < 7; i++) {
         if(ARR_CAREGORY[i] == category) {
@@ -260,4 +279,14 @@ int Data::getNumberNameCategory(QString category) {
         }
     }
     return -1;
+}
+
+
+QStringList Data::getWordList() {
+    QStringList list;
+    query->exec("SELECT name FROM Products");
+    while(query->next()) {
+        list.push_back(query->value(0).toString());
+    }
+    return list;
 }
