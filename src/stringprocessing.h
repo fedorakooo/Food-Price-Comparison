@@ -2,7 +2,7 @@
 #define STRINGPROCESSING_H
 
 #include "product.h"
-#include <QDebug>
+#include <QString>
 
 class StringProcessing
 {

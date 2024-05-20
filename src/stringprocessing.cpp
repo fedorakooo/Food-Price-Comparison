@@ -48,7 +48,6 @@ QString StringProcessing::additionPrice(QString price) {
             break;
         }
     }
-    qDebug() << price.size();
     if(isDot && price.size() - i <= 2) {
         return price + "0";
     }

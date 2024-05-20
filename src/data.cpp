@@ -133,10 +133,8 @@ void Data::setProduct(QString _category, QString _subcategory, QString _substr) 
             auto it = mapCategory.find(_category);
             if (it != mapCategory.end()){
                 int start = it->second.first;
-                int i = 0;
                 int end = it->second.second;
-                while (start < end && i < 42) {
-                    i++;
+                while (start < end) {
                     query->exec("SELECT * FROM Products WHERE id = " + QString::number(start));
                     query->next();
                     QString name = query->value(1).toString();

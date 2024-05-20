@@ -1,6 +1,6 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
-#include <iostream>
+
 #include <QPixmap>
 
 class Product

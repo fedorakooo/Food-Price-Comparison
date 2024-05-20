@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+    #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -313,17 +313,20 @@ void MainWindow::previousPage() {
 void MainWindow::updatePage() {
     numberAllPage = data->product.size() / 6;
     updateDataMainWindow();
+
     if(data->product.isEmpty()) {
         for(int i = 0; i < 6; i++) {
             arrProductMainWindow[i] = new Product();
         }
     }
+
     updateProductsMainWindow();
     updateVisibleButton();
     if(numberAllPage == 0)
         numberAllPage++;
     ui->labelNumberPage->setText(QString::number(numberPage + 1) + "/" + QString::number(numberAllPage));
 }
+
 
 void MainWindow::updateVisibleButton() {
     for(int i = 0; i < 6; i++) {
@@ -460,25 +463,47 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::sortProduct() {
     switch(numberSort) {
         case 0: {
-            on_radioPopularProduct_clicked();
+            numberSort = 0;
+            if(search == "") {
+                data->setPopularProduct(category, subcategory);
+            }
+            else {
+                data->setProduct(category, subcategory, search);
+            }
             break;
         }
         case 1: {
-            on_radioIncreasingName_clicked();
+            data->deleteNoProduct();
+            numberSort = 1;
+            numberPage = 0;
+            ProductSort::threeWayQuickSortIncrease(&data->product, 0, data->product.size() - 1);
+            data->doProductMultiples();
             break;
         }
         case 2: {
-            on_radioReductionName_clicked();
+            data->deleteNoProduct();
+            numberSort = 2;
+            numberPage = 0;
+            ProductSort::threeWayQuickSortDecrease(&data->product, 0, data->product.size() - 1);
+            data->doProductMultiples();
             break;
         }
         case 3: {
-            on_radioIncreasingPrice_clicked();
+            data->deleteNoProduct();
+            numberSort = 3;
+            ProductSort::timsortIncrease(&(data->product));
+            data->doProductMultiples();
             break;
         }
         case 4: {
-            on_radioReductionPrice_clicked();
+            data->deleteNoProduct();
+            numberSort = 4;
+            numberPage = 0;
+            ProductSort::timsortDecrease(&(data->product));
+            data->doProductMultiples();
             break;
         }
     }
+
 }
 

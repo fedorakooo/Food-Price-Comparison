@@ -7,7 +7,27 @@ ProductWidget::ProductWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    arrLabelPriceShop.push_back(ui->labelPriceFirstShop);
+    arrLabelPriceShop.push_back(ui->labelPriceSecondShop);
+    arrLabelPriceShop.push_back(ui->labelPriceThirdShop);
+    arrLabelPriceShop.push_back(ui->labelPriceFourthShop);
+    arrLabelPriceShop.push_back(ui->labelPriceFifthShop);
+    arrLabelPriceShop.push_back(ui->labelPriceSixthShop);
+    arrLabelPriceShop.push_back(ui->labelPriceSeventhShop);
+
+    arrLabelShop.push_back(ui->labelShop_1);
+    arrLabelShop.push_back(ui->labelShop_2);
+    arrLabelShop.push_back(ui->labelShop_3);
+    arrLabelShop.push_back(ui->labelShop_4);
+    arrLabelShop.push_back(ui->labelShop_5);
+    arrLabelShop.push_back(ui->labelShop_6);
+    arrLabelShop.push_back(ui->labelShop_7);
+
     ui->label->setAlignment(Qt::AlignCenter);
+
+
+
+    setAppearance();
 
     this->setWindowFlags(Qt::WindowStaysOnTopHint |
                          Qt::WindowSystemMenuHint |
@@ -16,17 +36,34 @@ ProductWidget::ProductWidget(QWidget *parent) :
                          Qt::Popup);
 }
 
+void ProductWidget::setAppearance() {
+    QFont* fontPrice = new QFont();
+    QFont* font = new QFont();
+    font->setPointSize(10);
+    font->setBold(true);
+    fontPrice->setPointSize(13);
+    ui->nameProduct->setFont(*font);
+    ui->categoryProduct->setFont(*font);
+    for(int i = 0; i < 7; i++) {
+        arrLabelShop[i]->setFont(*font);
+        arrLabelPriceShop[i]->setFont(*fontPrice);
+    }
+}
 void ProductWidget::add(Product* product) {
     if(product->getName() != " " && product->getBestPrice() != 0) {
         ui->nameProduct->setText(product->getName());
-        setPrice(ui->labelPriceFirstShop, product->getArrPrice()[0]);
-        setPrice(ui->labelPriceSecondShop, product->getArrPrice()[1]);
-        setPrice(ui->labelPriceThirdShop, product->getArrPrice()[2]);
-        setPrice(ui->labelPriceFourthShop, product->getArrPrice()[3]);
-        setPrice(ui->labelPriceFifthShop, product->getArrPrice()[4]);
-        setPrice(ui->labelPriceSixthShop, product->getArrPrice()[5]);
-        setPrice(ui->labelPriceSeventhShop, product->getArrPrice()[6]);
+
+        for(int i = 0; i < 7; i++) {
+            if(product->getArrPrice()[i] == product->getBestPrice()) {
+                setBestPrice(i, product->getArrPrice()[i]);
+            }
+            else {
+                setPrice(i, product->getArrPrice()[i]);
+            }
+        }
+
         QPixmap picture = product->getPicture();
+
         picture = picture.scaled(ui->label->size(), Qt::KeepAspectRatio);
 
         ui->label->setPixmap(picture);
@@ -36,11 +73,20 @@ void ProductWidget::add(Product* product) {
     }
 }
 
+
+void ProductWidget::setBestPrice(int number, double price) {
+    arrLabelShop[number]->setStyleSheet("QLabel { color : red; }");
+    arrLabelPriceShop[number]->setStyleSheet("QLabel { color : red; }");
+    arrLabelPriceShop[number]->setText((price == -1) ? "—" : StringProcessing::additionPrice(QString::number(price)));
+}
+
 ProductWidget::~ProductWidget()
 {
     delete ui;
 }
 
-void ProductWidget::setPrice(QLabel* label, double price) {
-    label->setText((price == -1) ? "—" : StringProcessing::additionPrice(QString::number(price)));
+void ProductWidget::setPrice(int number, double price) {
+    arrLabelShop[number]->setStyleSheet("QLabel { color : black; }");
+    arrLabelPriceShop[number]->setStyleSheet("QLabel { color : black; }");
+    arrLabelPriceShop[number]->setText((price == -1) ? "—" : StringProcessing::additionPrice(QString::number(price)));
 }
