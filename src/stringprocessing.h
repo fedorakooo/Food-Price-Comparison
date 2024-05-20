@@ -1,8 +1,8 @@
 #ifndef STRINGPROCESSING_H
 #define STRINGPROCESSING_H
 
-#include "product.h"
 #include <QString>
+#include "product.h"
 
 class StringProcessing
 {

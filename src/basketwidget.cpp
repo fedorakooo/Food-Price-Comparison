@@ -40,18 +40,18 @@ void BasketWidget::addProductBasket(Product* product) {
             else {
                 arrFullPrice[i] += product->getArrPrice()[i];
                 ui->tableWidget->setItem(numberProductOnBasket + 1, 2 + i,
-                                         new QTableWidgetItem(QString::number(product->getArrPrice()[i])));
+                                         new QTableWidgetItem(StringProcessing::additionPrice(QString::number(product->getArrPrice()[i]))));
             }
         }
         double minimum = 1e20;
         for(int i = 0; i < 7; i++) {
-            if(arrNoProduct[i] == 0) {
-                minimum = qMin(minimum, arrFullPrice[i]);
+            if(product->getArrPrice()[i] > 0) {
+                minimum = qMin(minimum, product->getArrPrice()[i]);
             }
         }
         for(int i = 0; i < 7; i++) {
-            if(arrNoProduct[i] == 0 && arrFullPrice[i] == minimum) {
-                QTableWidgetItem *item = new QTableWidgetItem(QString::number(product->getArrPrice()[i]));
+            if(product->getArrPrice()[i] == minimum) {
+                QTableWidgetItem *item = new QTableWidgetItem(StringProcessing::additionPrice(QString::number(product->getArrPrice()[i])));
                 item->setForeground(QBrush(QColor(255, 0, 0)));
                 ui->tableWidget->setItem(numberProductOnBasket + 1, 2 + i, item);
             }
@@ -117,7 +117,7 @@ void BasketWidget::updateInfo() {
     }
     for(int i = 0; i < NUMBER_CATEGORY; i++) {
         if(arrNoProduct[i] == 0 && arrFullPrice[i] == minimum && minimum != 0) {
-            QTableWidgetItem *item = new QTableWidgetItem(QString::number(arrFullPrice[i]));
+            QTableWidgetItem *item = new QTableWidgetItem(StringProcessing::additionPrice(QString::number(arrFullPrice[i])));
             item->setFont(*font);
             item->setForeground(QBrush(QColor(255, 0, 0)));
             ui->tableWidget->setItem(0, 2 + i, item);
@@ -128,7 +128,7 @@ void BasketWidget::updateInfo() {
             ui->tableWidget->setItem(0, 2 + i, item);
         }
         else {
-            QTableWidgetItem* item = new QTableWidgetItem(QString::number(arrFullPrice[i]));
+            QTableWidgetItem* item = new QTableWidgetItem(StringProcessing::additionPrice(QString::number(arrFullPrice[i])));
             item->setFont(*font);
             ui->tableWidget->setItem(0, 2 + i, item);
         }

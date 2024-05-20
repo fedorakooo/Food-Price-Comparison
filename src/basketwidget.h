@@ -3,8 +3,9 @@
 
 #include <QWidget>
 #include <QPushButton>
-#include "product.h"
 #include <QTableWidget>
+#include "product.h"
+#include "stringprocessing.h"
 
 namespace Ui {
 class BasketWidget;
