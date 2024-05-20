@@ -21,6 +21,7 @@ Data::Data() {
                         "Масло сливочное", "Кефир", "Мороженое порционное", "Сырки глазированные, творожные торты",
                         "Творога зерненые (без наполнителей)", "Яйца куриные"}};
     setPopularProduct("Категории", "Подкатегории");
+    setWordListCategory();
 }
 
 void Data::setProduct(QString _category, QString _subcategory) {
@@ -279,12 +280,35 @@ int Data::getNumberNameCategory(QString category) {
     return -1;
 }
 
-
-QStringList Data::getWordList() {
+void Data::setWordListCategory() {
     QStringList list;
     query->exec("SELECT name FROM Products");
     while(query->next()) {
         list.push_back(query->value(0).toString());
     }
-    return list;
+    wordListCategory.push_back(list);
+    for(int i = 0; i < 7; i++) {
+        QStringList list;
+        query->exec("SELECT name FROM Products WHERE category = '" + ARR_CAREGORY[i] + "'");
+        while(query->next()) {
+            list.push_back(query->value(0).toString());
+        }
+        wordListCategory.push_back(list);
+    }
+}
+
+QStringList Data::getWordList(QString category, QString subcategory) {
+    if(subcategory == "Подкатегории") {
+        if(category == "Категории") {
+            return wordListCategory[0];
+        }
+        else {
+            for(int i = 0; i < 7; i++) {
+                if(ARR_CAREGORY[i] == category) {
+                    return wordListCategory[i + 1];
+                }
+            }
+        }
+    }
+    return QStringList();
 }

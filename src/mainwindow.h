@@ -30,6 +30,8 @@ public:
     ~MainWindow();
 private:
     QStringList* wordList;
+    void updateCompleter();
+    QVector<QStringList*> wordListCategory;
     QWidget *mainWidget;
     ProductWidget *productWidget;
     BasketWidget *basketWidget;
@@ -41,6 +43,7 @@ private:
     QString search;
     void updatePage();
     QString path;
+    QCompleter *completer;
     QVector<QLabel*> arrLabelPrice;
     QVector<QLabel*> arrLabelPicture;
     QVector<QPushButton*> arrButtonOpenProductWidget;
@@ -60,6 +63,7 @@ private slots:
     void fillArrButtonOpenProductWidget();
     void fillArrButtonAddProductBasket();
     void fillArrGroupBox();
+    void fillComboBox();
     void nextPage();
     void previousPage();
     void setSettingAllWidget();

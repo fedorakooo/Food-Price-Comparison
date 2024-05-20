@@ -23,8 +23,10 @@ public:
     int getNumberNameCategory(QString category);
     void deleteNoProduct();
     void doProductMultiples();
-    QStringList getWordList();
+    QStringList getWordList(QString category, QString subcategory);
+    QVector<QStringList> wordListCategory;
 private:
+    void setWordListCategory();
     Product* getProductFromData();
     const int RANGE = 20;
     const int NUMBER_CATEGORY = 7;

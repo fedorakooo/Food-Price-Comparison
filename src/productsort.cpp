@@ -1,4 +1,5 @@
 #include "productsort.h"
+
 ProductSort::ProductSort() {
 
 }

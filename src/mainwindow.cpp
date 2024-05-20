@@ -1,4 +1,4 @@
-    #include "mainwindow.h"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -25,27 +25,13 @@ MainWindow::MainWindow(QWidget *parent)
     productWidget = new ProductWidget();
     basketWidget = new BasketWidget();
 
-    QCompleter *completer = new QCompleter(data->getWordList(), this);
-    completer->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->lineSearch->setCompleter(completer);
-
-
     category = "Категории";
     subcategory = "Подкатегории";
 
+    completer = new QCompleter(data->getWordList(category, subcategory), this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->lineSearch->setCompleter(completer);
 
-    {
-        ui->comboBoxCategory->addItem("Категории");
-        ui->comboBoxCategory->addItem("Вода, напитки, соки, кофе и чай");
-        ui->comboBoxCategory->addItem("Бакалея");
-        ui->comboBoxCategory->addItem("Овощи и фрукты");
-        ui->comboBoxCategory->addItem("Мучные кондитерские изделия");
-        ui->comboBoxCategory->addItem("Сахарные кондитерские изделия");
-        ui->comboBoxCategory->addItem("Замороженные продукты");
-        ui->comboBoxCategory->addItem("Молочные продукты, яйца");
-
-        ui->comboBoxSubcategoty->addItem("Подкатегории");
-    }
     numberAllPage = data->product.size() / 6;
 
     updatePage();
@@ -151,6 +137,7 @@ void MainWindow::newCategory(int number) {
     data->setPopularProduct(category, subcategory);
     sortProduct();
     updatePage();
+    updateCompleter();
 }
 
 void MainWindow::newSubcategory(int number) {
@@ -159,6 +146,13 @@ void MainWindow::newSubcategory(int number) {
     numberPage = 0;
     sortProduct();
     updatePage();
+    updateCompleter();
+}
+
+void MainWindow::updateCompleter() {
+    completer = new QCompleter(data->getWordList(category, subcategory), this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->lineSearch->setCompleter(completer);
 }
 
 MainWindow::~MainWindow()
@@ -193,6 +187,18 @@ void MainWindow::fillArrGroupBox() {
     arrGroupBox.push_back(ui->groupBox_6);
 }
 
+void MainWindow::fillComboBox() {
+    ui->comboBoxCategory->addItem("Категории");
+    ui->comboBoxCategory->addItem("Вода, напитки, соки, кофе и чай");
+    ui->comboBoxCategory->addItem("Бакалея");
+    ui->comboBoxCategory->addItem("Овощи и фрукты");
+    ui->comboBoxCategory->addItem("Мучные кондитерские изделия");
+    ui->comboBoxCategory->addItem("Сахарные кондитерские изделия");
+    ui->comboBoxCategory->addItem("Замороженные продукты");
+    ui->comboBoxCategory->addItem("Молочные продукты, яйца");
+
+    ui->comboBoxSubcategoty->addItem("Подкатегории");
+}
 
 void MainWindow::fillArrButtonOpenProductWidget() {
     arrButtonOpenProductWidget.push_back(ui->buttonOpenWidget_1);

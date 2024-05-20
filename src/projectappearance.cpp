@@ -16,7 +16,6 @@ void ProjectAppearance::setCorrectFontPrice(QFont* fontPrice) {
     fontPrice->setWeight(QFont::Bold);
 }
 
-
 void ProjectAppearance::setSettingButtonsOpenProductWidget(QVector<QPushButton*> arrButtonOpenProductWidget) {
     for(int i = 0; i < 6; i++) {
         arrButtonOpenProductWidget[i]->setStyleSheet("QPushButton{background: transparent;}");
