@@ -1,0 +1,12 @@
+release/basketwidget.o
+release/data.o
+release/main.o
+release/mainwindow.o
+release/product.o
+release/productsort.o
+release/productwidget.o
+release/projectappearance.o
+release/stringprocessing.o
+release/moc_basketwidget.o
+release/moc_mainwindow.o
+release/moc_productwidget.o
