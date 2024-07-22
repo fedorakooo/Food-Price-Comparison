@@ -35,7 +35,6 @@ private:
     QWidget *mainWidget;
     ProductWidget *productWidget;
     BasketWidget *basketWidget;
-    const QString DIRECTORY_IMAGE = "/image/";
     Data* data;
     Product* arrProductMainWindow[6];
     int numberPage;
@@ -53,8 +52,10 @@ private:
     QString category;
     QString subcategory;
     int numberSort;
+    const QString DIRECTORY_IMAGE = "/image/";
 private slots:
     void updateVisibleButton();
+    void setCategory();
     void newCategory(int number);
     void newSubcategory(int number);
     void fillAllWidget();

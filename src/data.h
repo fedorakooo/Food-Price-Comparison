@@ -25,6 +25,7 @@ public:
     void doProductMultiples();
     QStringList getWordList(QString category, QString subcategory);
     QVector<QStringList> wordListCategory;
+    const QString ARR_CAREGORY[7] = {"Вода, напитки, соки, кофе и чай", "Бакалея", "Овощи и фрукты", "Мучные кондитерские изделия", "Сахарные кондитерские изделия", "Замороженные продукты", "Молочные продукты, яйца"};
 private:
     void setWordListCategory();
     Product* getProductFromData();
@@ -32,7 +33,6 @@ private:
     const int NUMBER_CATEGORY = 7;
     const int NUMBER_SUBCATEGORY = 51;
     const int ARR_SIZE_CATEGORY[7] = {8, 10, 1, 3, 5, 2, 12};
-    const QString ARR_CAREGORY[7] = {"Вода, напитки, соки, кофе и чай", "Бакалея", "Овощи и фрукты", "Мучные кондитерские изделия", "Сахарные кондитерские изделия", "Замороженные продукты", "Молочные продукты, яйца"};
     std::map<QString, QPair<int, int>> mapCategory = {{"Вода, напитки, соки, кофе и чай", QPair<int, int>(1, 360)},
         {"Бакалея", QPair<int, int>(360, 853)},
         {"Овощи и фрукты", QPair<int, int>(853, 858)},

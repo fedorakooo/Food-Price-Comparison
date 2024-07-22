@@ -140,7 +140,7 @@ void BasketWidget::updateInfo() {
 
 void BasketWidget::deleteBasket() {
     while(numberProductOnBasket) {
-        for(int j = 0; j < 7; j++) {
+        for(int j = 0; j < NUMBER_CATEGORY; j++) {
             arrFullPrice[j] = 0;
             arrNoProduct[j] = 0;
         }

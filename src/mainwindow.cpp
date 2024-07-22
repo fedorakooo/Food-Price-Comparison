@@ -6,36 +6,24 @@ MainWindow::MainWindow(QWidget *parent)
 {
     mainWidget = new QWidget(this);
     ui->setupUi(this);
-
     data = new Data();
-
     ui->radioPopularProduct->setChecked(true);
-
     path = QDir::currentPath();
-
     wordList = new QStringList();
     fillAllWidget();
     setSettingAllWidget();
-
     QPixmap background("./image/fon");
     QPalette palette;
     palette.setBrush(QPalette::Window, QBrush(background));
     this->setPalette(palette);
-
     productWidget = new ProductWidget();
     basketWidget = new BasketWidget();
-
-    category = "Категории";
-    subcategory = "Подкатегории";
-
+    setCategory();
     completer = new QCompleter(data->getWordList(category, subcategory), this);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     ui->lineSearch->setCompleter(completer);
-
     numberAllPage = data->product.size() / 6;
-
     updatePage();
-
     connect(ui->buttonClose, &QPushButton::clicked, this, &MainWindow::close);
     connect(ui->buttonCollapse, &QPushButton::clicked, this, &MainWindow::showMinimized);
     connect(ui->buttonBasket, &QPushButton::clicked, basketWidget, &BasketWidget::show);
@@ -43,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->buttonPreviosPage, &QPushButton::clicked, this, &MainWindow::previousPage);
     connect(ui->comboBoxCategory, SIGNAL(currentIndexChanged(int)), this, SLOT(newCategory(int)));
     connect(ui->comboBoxSubcategoty, SIGNAL(currentIndexChanged(int)), this, SLOT(newSubcategory(int)));
-
     this->showFullScreen();
 }
 
@@ -147,6 +134,16 @@ void MainWindow::newSubcategory(int number) {
     sortProduct();
     updatePage();
     updateCompleter();
+}
+
+void MainWindow::setCategory() {
+    ui->comboBoxCategory->addItem("Категории");
+    for(int i = 0; i < 6; i++) {
+        ui->comboBoxCategory->addItem(data->ARR_CAREGORY[i]);
+    }
+    ui->comboBoxSubcategoty->addItem("Подкатегории");
+    category = "Категории";
+    subcategory = "Подкатегории";
 }
 
 void MainWindow::updateCompleter() {
