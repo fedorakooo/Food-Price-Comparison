@@ -24,12 +24,15 @@ private:
     int numberProductOnBasket;
     double arrFullPrice[7] {};
     const int NUMBER_CATEGORY = 7;
+    const int WIDGET_SIZE = 120;
+    const int MOVING_WIDGET_X_CENTRE = 200;
+    const int MOVING_WIDGET_Y_CENTRE = 100;
+    const double NUMBER_CHECK_CORRECT_FULL_PRICE_VALUE = 0.001;
     Ui::BasketWidget *ui;
 private slots:
     void deleteProduct();
     void deleteBasket();
     void updateInfo();
-
 };
 
 #endif // BASKETWIDGET_H

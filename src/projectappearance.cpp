@@ -6,8 +6,8 @@ ProjectAppearance::ProjectAppearance() {
 void ProjectAppearance::setSettingFontPrice(QVector<QLabel*> arrLabelPrice) {
     QFont* fontPrice = new QFont();
     setCorrectFontPrice(fontPrice);
-    for(int i = 0; i < 6; i++) {
-        arrLabelPrice[i]->setFont(*fontPrice);
+    for(QLabel* label : arrLabelPrice) {
+        label->setFont(*fontPrice);
     }
 }
 
@@ -17,18 +17,16 @@ void ProjectAppearance::setCorrectFontPrice(QFont* fontPrice) {
 }
 
 void ProjectAppearance::setSettingButtonsOpenProductWidget(QVector<QPushButton*> arrButtonOpenProductWidget) {
-    for(int i = 0; i < 6; i++) {
-        arrButtonOpenProductWidget[i]->setStyleSheet("QPushButton{background: transparent;}");
+    for(QPushButton* button : arrButtonOpenProductWidget) {
+        button->setStyleSheet("QPushButton{background: transparent;}");
     }
 }
-
-
 
 void ProjectAppearance::setSettingFontName(QVector<QGroupBox*> arrGroupBox) {
     QFont* fontName = new QFont();
     setCorrectFontName(fontName);
-    for(int i = 0; i < 6; i++) {
-        arrGroupBox[i]->setFont(*fontName);
+    for(QGroupBox* box : arrGroupBox) {
+        box->setFont(*fontName);
     }
 }
 
@@ -38,7 +36,7 @@ void ProjectAppearance::setCorrectFontName(QFont* fontName) {
 }
 
 void ProjectAppearance::setSettingFontPicture(QVector<QLabel*> arrLabelPicture) {
-    for(int i = 0; i < 6; i++) {
-        arrLabelPicture[i]->setAlignment(Qt::AlignCenter);
+    for(QLabel* label : arrLabelPicture) {
+        label->setAlignment(Qt::AlignCenter);
     }
 }

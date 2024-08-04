@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     completer = new QCompleter(data->getWordList(category, subcategory), this);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     ui->lineSearch->setCompleter(completer);
-    numberAllPage = data->product.size() / 6;
+    numberAllPage = data->product.size() / SIZE_PRODUCTS;
     updatePage();
     connect(ui->buttonClose, &QPushButton::clicked, this, &MainWindow::close);
     connect(ui->buttonCollapse, &QPushButton::clicked, this, &MainWindow::showMinimized);
@@ -138,7 +138,7 @@ void MainWindow::newSubcategory(int number) {
 
 void MainWindow::setCategory() {
     ui->comboBoxCategory->addItem("Категории");
-    for(int i = 0; i < 6; i++) {
+    for(int i = 0; i < SIZE_PRODUCTS; i++) {
         ui->comboBoxCategory->addItem(data->ARR_CAREGORY[i]);
     }
     ui->comboBoxSubcategoty->addItem("Подкатегории");
@@ -207,7 +207,7 @@ void MainWindow::fillArrButtonOpenProductWidget() {
 }
 
 void MainWindow::updateProductsMainWindow() {
-    for(int i = 0; i < 6; i++) {
+    for(int i = 0; i < SIZE_PRODUCTS; i++) {
         setInformationSomeProduct(i, arrProductMainWindow[i]);
     }
 }
@@ -285,18 +285,18 @@ void MainWindow::on_buttonAddProduct_5_clicked()
     }
 }
 
-void MainWindow::updateDataMainWindow() {
-    for(int i = numberPage * 6; i < data->product.size() && i < (numberPage * 6 + 6); i++) {
-        arrProductMainWindow[i % 6] = data->product[i];
-    }
-
-}
-
 void MainWindow::on_buttonAddProduct_6_clicked()
 {
     if(arrProductMainWindow[5]->getName() != "") {
-      basketWidget->addProductBasket(arrProductMainWindow[5]);
+        basketWidget->addProductBasket(arrProductMainWindow[5]);
     }
+}
+
+void MainWindow::updateDataMainWindow() {
+    for(int i = numberPage * SIZE_PRODUCTS; i < data->product.size() && i < (numberPage * SIZE_PRODUCTS + SIZE_PRODUCTS); i++) {
+        arrProductMainWindow[i % SIZE_PRODUCTS] = data->product[i];
+    }
+
 }
 
 void MainWindow::nextPage() {
@@ -314,11 +314,11 @@ void MainWindow::previousPage() {
 }
 
 void MainWindow::updatePage() {
-    numberAllPage = data->product.size() / 6;
+    numberAllPage = data->product.size() / SIZE_PRODUCTS;
     updateDataMainWindow();
 
     if(data->product.isEmpty()) {
-        for(int i = 0; i < 6; i++) {
+        for(int i = 0; i < SIZE_PRODUCTS; i++) {
             arrProductMainWindow[i] = new Product();
         }
     }
@@ -332,7 +332,7 @@ void MainWindow::updatePage() {
 
 
 void MainWindow::updateVisibleButton() {
-    for(int i = 0; i < 6; i++) {
+    for(int i = 0; i < SIZE_PRODUCTS; i++) {
         if(arrProductMainWindow[i]->getName() == "") {
             arrGroupBox[i]->setVisible(false);
         }
@@ -343,7 +343,7 @@ void MainWindow::updateVisibleButton() {
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-    if(event->key() == 16777220) {
+    if(event->key() == SEARCH_BUTTON_CODE) {
         on_buttonSearchProduct_clicked();
     }
 }

@@ -20,6 +20,14 @@ Data::Data() {
                         "Молоко сгущенное и концентрированное", "Сыры твердые", "Творога зерненые (с наполнителем)",
                         "Масло сливочное", "Кефир", "Мороженое порционное", "Сырки глазированные, творожные торты",
                         "Творога зерненые (без наполнителей)", "Яйца куриные"}};
+    mapCategory = {{"Вода, напитки, соки, кофе и чай", QPair<int, int>(1, 360)},
+        {"Бакалея", QPair<int, int>(360, 853)},
+        {"Овощи и фрукты", QPair<int, int>(853, 858)},
+        {"Мучные кондитерские изделия", QPair<int, int>(858, 992)},
+        {"Сахарные кондитерские изделия", QPair<int, int>(992, 1217)},
+        {"Замороженные продукты", QPair<int, int>(1217, 1307)},
+        {"Молочные продукты, яйца", QPair<int, int>(1307, 1830)}
+    };
     setPopularProduct("Категории", "Подкатегории");
     setWordListCategory();
 }
@@ -35,13 +43,9 @@ void Data::setProduct(QString _category, QString _subcategory) {
             QString file = query->value(4).toString();
             double* price = new double[NUMBER_CATEGORY];
             for(int i = 0; i < NUMBER_CATEGORY; i++) {
-                bool ok;
                 QString number = query->value(6+i).toString();
                 if(number == '-') {
                     price[i] = -1;
-                }
-                else {
-                    price[i] = number.toDouble(&ok);
                 }
             }
             product.push_back(new Product(name, price, file, category, subcategory));
@@ -213,11 +217,11 @@ void Data::setPopularProduct(QString _category, QString _subcategory) {
         if (it != mapCategory.end()) {
             int start = it->second.first;
             int end = it->second.second;
-            if(end - start < 2 * 40) {
+            if(end - start < 2 * SIZE_SET_POPULAR_PRODUCTS) {
                 setProduct(_category, _subcategory);
             }
             else {
-                while (set.size() < 40) {
+                while (set.size() < SIZE_SET_POPULAR_PRODUCTS) {
                     int numberCategory = getNumberNameCategory(_category);
                     int numberSubcategory = randomGenerator->bounded(0, ARR_SIZE_CATEGORY[numberCategory]);
                     QString subcategory = ArrSubcategory[numberCategory][numberSubcategory];
@@ -241,7 +245,7 @@ void Data::setPopularProduct(QString _category, QString _subcategory) {
 }
 
 void Data::doProductMultiples() {
-    while(product.size() % 6 != 0) {
+    while(product.size() % (NUMBER_CATEGORY - 1) != 0) {
         product.push_back(new Product());
     }
 }

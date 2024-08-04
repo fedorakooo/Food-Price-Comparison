@@ -24,11 +24,7 @@ ProductWidget::ProductWidget(QWidget *parent) :
     arrLabelShop.push_back(ui->labelShop_7);
 
     ui->label->setAlignment(Qt::AlignCenter);
-
-
-
     setAppearance();
-
     this->setWindowFlags(Qt::WindowStaysOnTopHint |
                          Qt::WindowSystemMenuHint |
                          Qt::FramelessWindowHint|
@@ -43,8 +39,7 @@ void ProductWidget::setAppearance() {
     font->setBold(true);
     fontPrice->setPointSize(13);
     ui->nameProduct->setFont(*font);
-    ui->categoryProduct->setFont(*font);
-    for(int i = 0; i < 7; i++) {
+    for(int i = 0; i < SIZE_PRODUCT_PRICES; i++) {
         arrLabelShop[i]->setFont(*font);
         arrLabelPriceShop[i]->setFont(*fontPrice);
     }
@@ -53,7 +48,7 @@ void ProductWidget::add(Product* product) {
     if(product->getName() != " " && product->getBestPrice() != 0) {
         ui->nameProduct->setText(product->getName());
 
-        for(int i = 0; i < 7; i++) {
+        for(int i = 0; i < SIZE_PRODUCT_PRICES; i++) {
             if(product->getArrPrice()[i] == product->getBestPrice()) {
                 setBestPrice(i, product->getArrPrice()[i]);
             }

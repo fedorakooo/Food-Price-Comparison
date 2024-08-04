@@ -52,7 +52,9 @@ private:
     QString category;
     QString subcategory;
     int numberSort;
-    const QString DIRECTORY_IMAGE = "/image/";
+    const QString DIRECTORY_IMAGE = "./image/";
+    const int SIZE_PRODUCTS = 6;
+    const int SEARCH_BUTTON_CODE = 16777220;
 private slots:
     void updateVisibleButton();
     void setCategory();

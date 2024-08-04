@@ -33,14 +33,8 @@ private:
     const int NUMBER_CATEGORY = 7;
     const int NUMBER_SUBCATEGORY = 51;
     const int ARR_SIZE_CATEGORY[7] = {8, 10, 1, 3, 5, 2, 12};
-    std::map<QString, QPair<int, int>> mapCategory = {{"Вода, напитки, соки, кофе и чай", QPair<int, int>(1, 360)},
-        {"Бакалея", QPair<int, int>(360, 853)},
-        {"Овощи и фрукты", QPair<int, int>(853, 858)},
-        {"Мучные кондитерские изделия", QPair<int, int>(858, 992)},
-        {"Сахарные кондитерские изделия", QPair<int, int>(992, 1217)},
-        {"Замороженные продукты", QPair<int, int>(1217, 1307)},
-        {"Молочные продукты, яйца", QPair<int, int>(1307, 1830)}
-    };
+    const int SIZE_SET_POPULAR_PRODUCTS = 40;
+    std::map<QString, QPair<int, int>> mapCategory;
     QSqlDatabase db;
     QSqlQuery* query;
 };

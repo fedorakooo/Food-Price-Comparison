@@ -16,8 +16,6 @@ class ProductWidget;
 class ProductWidget : public QWidget
 {
     Q_OBJECT
-protected:
-
 public:
     explicit ProductWidget(QWidget *parent = nullptr);
     ~ProductWidget();
@@ -29,8 +27,9 @@ private:
     void setBestPrice(int number, double price);
     QVector<QLabel*> arrLabelPriceShop;
     QVector<QLabel*> arrLabelShop;
-    int const MOVING_WIDGET_X_CENTRE = 200;
-    int const MOVING_WIDGET_Y_CENTRE = 100;
+    const int MOVING_WIDGET_X_CENTRE = 200;
+    const int MOVING_WIDGET_Y_CENTRE = 100;
+    const int SIZE_PRODUCT_PRICES = 7;
     Ui::ProductWidget *ui;
 };
 

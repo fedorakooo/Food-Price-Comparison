@@ -89,7 +89,6 @@ void ProductSort::timsortIncrease(QVector<Product*> *array)
     }
 }
 
-
 void ProductSort::insertionSortDecrease(QVector<Product*> *array, int start_index, int end_index)
 {
 

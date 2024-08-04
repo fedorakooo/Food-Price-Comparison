@@ -11,11 +11,11 @@ BasketWidget::BasketWidget(QWidget *parent)
                          Qt::FramelessWindowHint|
                          Qt::Window |
                          Qt::Popup);
-    this->move(200,100);
+    this->move(MOVING_WIDGET_X_CENTRE,MOVING_WIDGET_Y_CENTRE);
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableWidget->resizeRowsToContents();
-    ui->tableWidget->verticalHeader()->setDefaultSectionSize(120);
-    ui->tableWidget->setColumnWidth(0, 120);
+    ui->tableWidget->verticalHeader()->setDefaultSectionSize(WIDGET_SIZE);
+    ui->tableWidget->setColumnWidth(0, WIDGET_SIZE);
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 
     ui->tableWidget->insertRow(ui->tableWidget->rowCount());
@@ -31,7 +31,7 @@ void BasketWidget::addProductBasket(Product* product) {
         QTableWidgetItem *nameProductItem = new QTableWidgetItem;
         nameProductItem->setText(product->getName());
         ui->tableWidget->setItem(numberProductOnBasket + 1, 1, nameProductItem);
-        for(int i = 0; i < 7; i++) {
+        for(int i = 0; i < NUMBER_CATEGORY; i++) {
             if(product->getArrPrice()[i] == -1) {
                 arrNoProduct[i]++;
                 ui->tableWidget->setItem(numberProductOnBasket + 1, 2 + i,
@@ -44,12 +44,12 @@ void BasketWidget::addProductBasket(Product* product) {
             }
         }
         double minimum = 1e20;
-        for(int i = 0; i < 7; i++) {
+        for(int i = 0; i < NUMBER_CATEGORY; i++) {
             if(product->getArrPrice()[i] > 0) {
                 minimum = qMin(minimum, product->getArrPrice()[i]);
             }
         }
-        for(int i = 0; i < 7; i++) {
+        for(int i = 0; i < NUMBER_CATEGORY; i++) {
             if(product->getArrPrice()[i] == minimum) {
                 QTableWidgetItem *item = new QTableWidgetItem(StringProcessing::additionPrice(QString::number(product->getArrPrice()[i])));
                 item->setForeground(QBrush(QColor(255, 0, 0)));
@@ -82,14 +82,14 @@ void BasketWidget::deleteProduct() {
         {
             if(ui->tableWidget->cellWidget(i, 9) == button)
             {
-                for(int j = 0; j < 7; j++) {
+                for(int j = 0; j < NUMBER_CATEGORY; j++) {
                 QTableWidgetItem *item = ui->tableWidget->item(i, j + 2);
                     if(item->text() == "-") {
                         arrNoProduct[j]--;
                     }
                     else {
                         arrFullPrice[j] -= (item->text()).toDouble();
-                        if(arrFullPrice[j] < 1e-5) {
+                        if(arrFullPrice[j] < NUMBER_CHECK_CORRECT_FULL_PRICE_VALUE) {
                             arrFullPrice[j] = 0;
                         }
                     }
