@@ -1,49 +1,55 @@
 #include "product.h"
 
-Product::Product() {
-    this->name = "";
-    this->arrCost = new double[8] {-1,-1,-1,-1,-1,-1,-1,-1};
-    this->category = "";
-    this->file = "";
-    isProduct = false;
-    picture = QPixmap();
-}
+Product::Product() :
+    file(""),
+    name(""),
+    category(""),
+    arrCost(QVector<double>(8, -1)),
+    picture(QPixmap()) {}
 
-Product::Product(QString name, double* arrCost, QString file, QString category, QString subcategory) {
-    this->name = name;
-    this->arrCost = arrCost;
-    this->category = category;
-    this->file = file;
-    picture = QPixmap("./image/" + file);
-    isProduct = !(name == "");
-}
+Product::Product(QString name, const QVector<double> arrCost, QString file, QString category, QString subcategory) :
+    name(name),
+    arrCost(arrCost),
+    file(file),
+    category(category),
+    subcategory(subcategory),
+    picture(QPixmap("./image/" + file)) {}
 
-QPixmap Product::getPicture() {
+QPixmap Product::getPicture() const {
     return picture;
 }
 
-QString Product::getFileName() {
+QString Product::getFileName() const {
     return file;
 }
-double* Product::getArrPrice() {
+
+QString Product::getCategory() const {
+    return category;
+}
+QString Product::getSubcategory() const {
+    return subcategory;
+}
+
+QVector<double> Product::getArrPrice() const {
     return arrCost;
 }
 
-QString Product::getName() {
+QString Product::getName() const {
     return name;
 }
 
-bool Product::getIsProduct() {
-    return isProduct;
-}
-double Product::getBestPrice() {
-    double result = 1e20;
-    bool isProduct = false;
-    for(int i = 0; i < 7; i++) {
-        if(arrCost[i] >= 0) {
-            isProduct = true;
-            result = qMin(result, arrCost[i]);
+double Product::getBestPrice() const {
+    double result = std::numeric_limits<double>::max();
+    bool foundProduct = false;
+    for (auto price : arrCost) {
+        if (price >= 0) {
+            foundProduct = true;
+            result = qMin(result, price);
         }
     }
-    return (isProduct ? result : -1);
+    return foundProduct ? result : -1;
+}
+
+bool Product::isValid() const {
+    return name != "";
 }

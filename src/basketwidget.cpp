@@ -1,151 +1,166 @@
 #include "basketwidget.h"
 #include "ui_basketwidget.h"
+#include "stringprocessing.h"
 
 BasketWidget::BasketWidget(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::BasketWidget)
-{
+    : QWidget(parent), ui(new Ui::BasketWidget) {
     ui->setupUi(this);
-    this->setWindowFlags(Qt::WindowStaysOnTopHint |
-                         Qt::WindowSystemMenuHint |
-                         Qt::FramelessWindowHint|
-                         Qt::Window |
-                         Qt::Popup);
-    this->move(MOVING_WIDGET_X_CENTRE,MOVING_WIDGET_Y_CENTRE);
+    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::WindowSystemMenuHint | Qt::FramelessWindowHint | Qt::Window | Qt::Popup);
+
+    // move window to center of screen
+    move(MOVING_WIDGET_X_CENTRE, MOVING_WIDGET_Y_CENTRE);
+
+    setupTable();
+    updateInfo();
+}
+
+BasketWidget::~BasketWidget() {
+    delete ui;
+}
+
+// Configure the basket table
+void BasketWidget::setupTable() {
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableWidget->resizeRowsToContents();
     ui->tableWidget->verticalHeader()->setDefaultSectionSize(WIDGET_SIZE);
     ui->tableWidget->setColumnWidth(0, WIDGET_SIZE);
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-
     ui->tableWidget->insertRow(ui->tableWidget->rowCount());
-    updateInfo();
-
-    numberProductOnBasket = 0;
 }
 
-
+// Add product to basket
 void BasketWidget::addProductBasket(Product* product) {
-    if(product->getName() != " " && product->getBestPrice() != 0) {
-        ui->tableWidget->insertRow(ui->tableWidget->rowCount());
-        QTableWidgetItem *nameProductItem = new QTableWidgetItem;
-        nameProductItem->setText(product->getName());
-        ui->tableWidget->setItem(numberProductOnBasket + 1, 1, nameProductItem);
-        for(int i = 0; i < NUMBER_CATEGORY; i++) {
-            if(product->getArrPrice()[i] == -1) {
-                arrNoProduct[i]++;
-                ui->tableWidget->setItem(numberProductOnBasket + 1, 2 + i,
-                                         new QTableWidgetItem("-"));
-            }
-            else {
-                arrFullPrice[i] += product->getArrPrice()[i];
-                ui->tableWidget->setItem(numberProductOnBasket + 1, 2 + i,
-                                         new QTableWidgetItem(StringProcessing::additionPrice(QString::number(product->getArrPrice()[i]))));
-            }
-        }
-        double minimum = 1e20;
-        for(int i = 0; i < NUMBER_CATEGORY; i++) {
-            if(product->getArrPrice()[i] > 0) {
-                minimum = qMin(minimum, product->getArrPrice()[i]);
-            }
-        }
-        for(int i = 0; i < NUMBER_CATEGORY; i++) {
-            if(product->getArrPrice()[i] == minimum) {
-                QTableWidgetItem *item = new QTableWidgetItem(StringProcessing::additionPrice(QString::number(product->getArrPrice()[i])));
-                item->setForeground(QBrush(QColor(255, 0, 0)));
-                ui->tableWidget->setItem(numberProductOnBasket + 1, 2 + i, item);
-            }
-        }
-        QPushButton* button = new QPushButton("Удалить");
-        ui->tableWidget->setIndexWidget(ui->tableWidget->model()->index(numberProductOnBasket + 1, 9), button);
-        QPixmap pixmap = product->getPicture().scaled(120,120, Qt::KeepAspectRatio);
-        QTableWidgetItem *itemPicture = new QTableWidgetItem;
-        itemPicture->setData(Qt::DecorationRole, pixmap);
+    // if object is not valid, finish this method
+    if (!product->isValid()) return;
 
-        ui->tableWidget->setItem(numberProductOnBasket + 1, 0, itemPicture);
+    addProductToTable(product);
+    updateProductPrices(product);
 
-        connect(button, &QPushButton::clicked, this, &BasketWidget::deleteProduct);
-        updateInfo();
-        numberProductOnBasket++;
-    }
+    auto *button = new QPushButton("Удалить");
+    ui->tableWidget->setIndexWidget(ui->tableWidget->model()->index(numberProductsOnBasket + 1, 9), button);
+    connect(button, &QPushButton::clicked, this, &BasketWidget::deleteProduct);
+
+    updateInfo();
+    numberProductsOnBasket++;
 }
 
-BasketWidget::~BasketWidget()
-{
-    delete ui;
+// Add product to the product table widget
+void BasketWidget::addProductToTable(Product* product) {
+    ui->tableWidget->insertRow(ui->tableWidget->rowCount());
+    auto *nameProductItem = new QTableWidgetItem(product->getName());
+    ui->tableWidget->setItem(numberProductsOnBasket + 1, 1, nameProductItem);
+
+    for (int i = 0; i < NUMBER_CATEGORY; i++) {
+        auto *item = new QTableWidgetItem;
+        // value -1 indicates that the product is not available in this store
+        if (product->getArrPrice()[i] == -1) {
+            arrNoProduct[i]++;
+            item->setText("-");
+        } else {
+            arrFullPrice[i] += product->getArrPrice()[i];
+            item->setText(StringProcessing::additionPrice(QString::number(product->getArrPrice()[i])));
+        }
+        ui->tableWidget->setItem(numberProductsOnBasket + 1, 2 + i, item);
+    }
+
+    // scale the image to a certain size
+    QPixmap pixmap = product->getPicture().scaled(120, 120, Qt::KeepAspectRatio);
+
+    auto *itemPicture = new QTableWidgetItem;
+    itemPicture->setData(Qt::DecorationRole, pixmap);
+    ui->tableWidget->setItem(numberProductsOnBasket + 1, 0, itemPicture);
+}
+
+// Updates the minimum prices of the product in the table by highlighting them with a certain color
+void BasketWidget::updateProductPrices(Product* product) {
+    double minimum = std::numeric_limits<double>::max();
+    const QVector<double> &prices = product->getArrPrice();
+
+    for (double price : prices) {
+        if (price > 0) {
+            minimum = qMin(minimum, price);
+        }
+    }
+
+    for (int i = 0; i < NUMBER_CATEGORY; i++) {
+        if (prices[i] == minimum) {
+            auto *item = new QTableWidgetItem(StringProcessing::additionPrice(QString::number(prices[i])));
+            item->setForeground(QBrush(QColor(255, 0, 0))); // QColor(255, 0, 0) is equivalent to red color
+            ui->tableWidget->setItem(numberProductsOnBasket + 1, 2 + i, item);
+        }
+    }
 }
 
 void BasketWidget::deleteProduct() {
-    if(numberProductOnBasket > 0) {
-        QPushButton* button = qobject_cast<QPushButton *>(sender());
-        for(int i = 0; i < ui->tableWidget->rowCount(); ++i)
-        {
-            if(ui->tableWidget->cellWidget(i, 9) == button)
-            {
-                for(int j = 0; j < NUMBER_CATEGORY; j++) {
-                QTableWidgetItem *item = ui->tableWidget->item(i, j + 2);
-                    if(item->text() == "-") {
-                        arrNoProduct[j]--;
-                    }
-                    else {
-                        arrFullPrice[j] -= (item->text()).toDouble();
-                        if(arrFullPrice[j] < NUMBER_CHECK_CORRECT_FULL_PRICE_VALUE) {
-                            arrFullPrice[j] = 0;
-                        }
-                    }
-                }
-                ui->tableWidget->removeRow(i);
-                numberProductOnBasket--;
-                break;
-            }
+    auto *button = qobject_cast<QPushButton*>(sender());
+    for (int row = 0; row < ui->tableWidget->rowCount(); row++) {
+        if (ui->tableWidget->cellWidget(row, 9) == button) {
+            updateProductInfo(row);
+            ui->tableWidget->removeRow(row);
+            numberProductsOnBasket--;
+            break;
         }
     }
     updateInfo();
 }
 
+// Update product information after removal of the product
+void BasketWidget::updateProductInfo(int row) {
+    for (int col = 0; col < NUMBER_CATEGORY; col++) {
+        auto *item = ui->tableWidget->item(row, col + 2);
+        if (item->text() == "-") {
+            arrNoProduct[col]--;
+        } else {
+            arrFullPrice[col] -= item->text().toDouble();
+            if (arrFullPrice[col] < NUMBER_CHECK_CORRECT_FULL_PRICE_VALUE) {
+                arrFullPrice[col] = 0;
+            }
+        }
+    }
+}
+
+// Updates general information about products
 void BasketWidget::updateInfo() {
-    QFont* font = new QFont();
-    font->setPointSize(13);
-    QTableWidgetItem *nameProductItem = new QTableWidgetItem;
-    nameProductItem->setText("Информация о всех продуктах");
-    ui->tableWidget->setItem(0,1,nameProductItem);
-    double minimum = 1e20;
-    for(int i = 0; i < 7; i++) {
-        if(arrNoProduct[i] == 0) {
+    QFont font;
+    font.setPointSize(13);
+
+    auto *nameProductItem = new QTableWidgetItem("Информация о всех продуктах");
+    ui->tableWidget->setItem(0, 1, nameProductItem);
+
+    double minimum = std::numeric_limits<double>::max();
+    for (int i = 0; i < NUMBER_CATEGORY; i++) {
+        if (arrNoProduct[i] == 0) {
             minimum = qMin(minimum, arrFullPrice[i]);
         }
     }
-    for(int i = 0; i < NUMBER_CATEGORY; i++) {
-        if(arrNoProduct[i] == 0 && arrFullPrice[i] == minimum && minimum != 0) {
-            QTableWidgetItem *item = new QTableWidgetItem(StringProcessing::additionPrice(QString::number(arrFullPrice[i])));
-            item->setFont(*font);
+
+    for (int i = 0; i < NUMBER_CATEGORY; i++) {
+        std::unique_ptr<QTableWidgetItem> item;
+        if (arrNoProduct[i] == 0 && arrFullPrice[i] == minimum && minimum != 0) {
+            item = std::make_unique<QTableWidgetItem>(StringProcessing::additionPrice(QString::number(arrFullPrice[i])));
             item->setForeground(QBrush(QColor(255, 0, 0)));
-            ui->tableWidget->setItem(0, 2 + i, item);
+        } else if (arrNoProduct[i] != 0) {
+            item = std::make_unique<QTableWidgetItem>("-");
+        } else {
+            item = std::make_unique<QTableWidgetItem>(StringProcessing::additionPrice(QString::number(arrFullPrice[i])));
         }
-        else if (arrNoProduct[i] != 0) {
-            QTableWidgetItem* item = new QTableWidgetItem("-");
-            item->setFont(*font);
-            ui->tableWidget->setItem(0, 2 + i, item);
-        }
-        else {
-            QTableWidgetItem* item = new QTableWidgetItem(StringProcessing::additionPrice(QString::number(arrFullPrice[i])));
-            item->setFont(*font);
-            ui->tableWidget->setItem(0, 2 + i, item);
-        }
+        item->setFont(font);
+        ui->tableWidget->setItem(0, 2 + i, item.release());
     }
-    QPushButton* button = new QPushButton("Удалить всё");
-    connect(button, &QPushButton::clicked, this, &BasketWidget::deleteBasket);
+
+    auto *button = new QPushButton("Удалить всё");
+    connect(button, &QPushButton::clicked, this, &BasketWidget::clearBasket);
     ui->tableWidget->setIndexWidget(ui->tableWidget->model()->index(0, 9), button);
 }
 
-void BasketWidget::deleteBasket() {
-    while(numberProductOnBasket) {
-        for(int j = 0; j < NUMBER_CATEGORY; j++) {
-            arrFullPrice[j] = 0;
-            arrNoProduct[j] = 0;
+void BasketWidget::clearBasket() {
+    while (numberProductsOnBasket > 0) {
+        for (int i = 0; i < NUMBER_CATEGORY; i++) {
+            arrFullPrice[i] = 0;
+            arrNoProduct[i] = 0;
         }
         ui->tableWidget->removeRow(1);
-        numberProductOnBasket--;
+        numberProductsOnBasket--;
     }
     updateInfo();
 }

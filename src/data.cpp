@@ -41,7 +41,7 @@ void Data::setProduct(QString _category, QString _subcategory) {
             QString category = query->value(2).toString();
             QString subcategory = query->value(3).toString();
             QString file = query->value(4).toString();
-            double* price = new double[NUMBER_CATEGORY];
+            QVector<double> price(NUMBER_CATEGORY);
             for(int i = 0; i < NUMBER_CATEGORY; i++) {
                 QString number = query->value(6+i).toString();
                 if(number == '-') {
@@ -65,7 +65,7 @@ void Data::setProduct(QString _category, QString _subcategory) {
                 QString category = query->value(2).toString();
                 QString subcategory = query->value(3).toString();
                 QString file = query->value(4).toString();
-                double* price = new double[NUMBER_CATEGORY];
+                QVector<double> price(NUMBER_CATEGORY);
                 for(int i = 0; i < NUMBER_CATEGORY; i++) {
                     bool ok;
                     QString number = query->value(6+i).toString();
@@ -88,7 +88,7 @@ void Data::setProduct(QString _category, QString _subcategory) {
             QString category = query->value(2).toString();
             QString subcategory = query->value(3).toString();
             QString file = query->value(4).toString();
-            double* price = new double[NUMBER_CATEGORY];
+            QVector<double> price(NUMBER_CATEGORY);
             for(int i = 0; i < NUMBER_CATEGORY; i++) {
                 bool ok;
                 QString number = query->value(6+i).toString();
@@ -119,7 +119,7 @@ void Data::setProduct(QString _category, QString _subcategory, QString _substr) 
                     QString category = query->value(2).toString();
                     QString subcategory = query->value(3).toString();
                     QString file = query->value(4).toString();
-                    double* price = new double[7];
+                    QVector<double> price(7);
                     for(int i = 0; i < NUMBER_CATEGORY; i++) {
                         bool ok;
                         QString number = query->value(6+i).toString();
@@ -148,7 +148,7 @@ void Data::setProduct(QString _category, QString _subcategory, QString _substr) 
                         QString category = query->value(2).toString();
                         QString subcategory = query->value(3).toString();
                         QString file = query->value(4).toString();
-                        double* price = new double[NUMBER_CATEGORY];
+                        QVector<double> price(NUMBER_CATEGORY);
                         for(int i = 0; i < NUMBER_CATEGORY; i++) {
                             bool ok;
                             QString number = query->value(6+i).toString();
@@ -174,7 +174,7 @@ void Data::setProduct(QString _category, QString _subcategory, QString _substr) 
                     QString category = query->value(2).toString();
                     QString subcategory = query->value(3).toString();
                     QString file = query->value(4).toString();
-                    double* price = new double[NUMBER_CATEGORY];
+                    QVector<double> price(NUMBER_CATEGORY);
                     for(int i = 0; i < NUMBER_CATEGORY; i++) {
                         bool ok;
                         QString number = query->value(6+i).toString();
@@ -262,7 +262,7 @@ Product* Data::getProductFromData() {
     QString category = query->value(2).toString();
     QString subcategory = query->value(3).toString();
     QString file = query->value(4).toString();
-    double* price = new double[NUMBER_CATEGORY];
+    QVector<double> price(NUMBER_CATEGORY);
     for(int i = 0; i < NUMBER_CATEGORY; i++) {
         bool ok;
         QString number = query->value(6+i).toString();

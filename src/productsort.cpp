@@ -65,7 +65,7 @@ void ProductSort::mergeIncrease(QVector<Product*> *array, int start_index, int m
 
 void ProductSort::timsortIncrease(QVector<Product*> *array)
 {
-    while(!array->isEmpty() && !array->back()->getIsProduct()) {
+    while(!array->isEmpty() && !array->back()->isValid()) {
         array->pop_back();
     }
 

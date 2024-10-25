@@ -1,26 +1,27 @@
-#ifndef PRODUCT_H
-#define PRODUCT_H
+#pragma once
 
 #include <QPixmap>
+#include <QString>
+#include <QVector>
 
-class Product
-{
+class Product {
 public:
     Product();
-    Product(QString name, double* arrCost, QString file, QString category, QString subcategory);
-    double* getArrPrice();
-    double getBestPrice();
-    QString getName();
-    QPixmap getPicture();
-    QString getFileName();
-    bool getIsProduct();
+    Product(QString name, const QVector<double> arrCost, QString file, QString category, QString subcategory);
+
+    QVector<double> getArrPrice() const;
+    double getBestPrice() const;
+    QString getName() const;
+    QString getCategory() const;
+    QString getSubcategory() const;
+    QPixmap getPicture() const;
+    QString getFileName() const;
+    bool isValid() const;
 private:
-    bool isProduct;
     QString file;
     QString name;
     QString category;
-    double* arrCost;
+    QString subcategory;
+    QVector<double> arrCost;
     QPixmap picture;
 };
-
-#endif // PRODUCT_H
