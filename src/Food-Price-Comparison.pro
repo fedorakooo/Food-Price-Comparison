@@ -13,30 +13,30 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    basketwidget.cpp \
-    data.cpp \
+    widgets/basketwidget/basketwidget.cpp \
+    data_processing/data.cpp \
     main.cpp \
-    mainwindow.cpp \
-    product.cpp \
-    productsort.cpp \
-    productwidget.cpp \
-    projectappearance.cpp \
-    stringprocessing.cpp
+    widgets/mainwindow/mainwindow.cpp \
+    logic/product.cpp \
+    logic/productsort.cpp \
+    widgets/productwidget/productwidget.cpp \
+    logic/projectappearance.cpp \
+    logic/stringprocessing.cpp
 
 HEADERS += \
-    basketwidget.h \
-    data.h \
-    mainwindow.h \
-    product.h \
-    productsort.h \
-    productwidget.h \
-    projectappearance.h \
-    stringprocessing.h
+    widgets/basketwidget/basketwidget.h \
+    data_processing/data.h \
+    widgets/mainwindow/mainwindow.h \
+    logic/product.h \
+    logic/productsort.h \
+    widgets/productwidget/productwidget.h \
+    logic/projectappearance.h \
+    logic/stringprocessing.h
 
 FORMS += \
-    basketwidget.ui \
-    mainwindow.ui \
-    productwidget.ui
+    ui/basketwidget.ui \
+    ui/mainwindow.ui \
+    ui/productwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
