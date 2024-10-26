@@ -8,14 +8,14 @@
 #include <QPalette>
 #include <QRadioButton>
 #include <QSignalMapper>
-#include "basketwidget.h"
-#include "productwidget.h"
-#include "product.h"
-#include "data.h"
+#include "widgets/basketwidget/basketwidget.h"
+#include "widgets/productwidget/productwidget.h"
+#include "logic/product.h"
+#include "data_processing/data.h"
 #include <QCompleter>
-#include "projectappearance.h"
-#include "stringprocessing.h"
-#include "productsort.h"
+#include "logic/projectappearance.h"
+#include "logic/stringprocessing.h"
+#include "logic/productsort.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

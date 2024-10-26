@@ -3,7 +3,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QTableWidget>
-#include "product.h"
+#include "logic/product.h"
 
 namespace Ui {
 class BasketWidget;

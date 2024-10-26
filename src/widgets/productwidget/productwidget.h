@@ -7,7 +7,7 @@
 #include <QMouseEvent>
 #include <QPushButton>
 #include <QFont>
-#include "stringprocessing.h"
+#include "logic/stringprocessing.h"
 
 namespace Ui {
 class ProductWidget;

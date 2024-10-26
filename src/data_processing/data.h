@@ -1,9 +1,9 @@
 #ifndef DATA_H
 #define DATA_H
 
-#include "product.h"
+#include "logic/product.h"
 #include <QMap>
-#include "stringprocessing.h"
+#include "logic/stringprocessing.h"
 #include <QDateTime>
 #include <QRandomGenerator>
 #include <QPair>

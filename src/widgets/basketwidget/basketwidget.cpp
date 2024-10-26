@@ -1,6 +1,6 @@
 #include "basketwidget.h"
 #include "ui_basketwidget.h"
-#include "stringprocessing.h"
+#include "logic/stringprocessing.h"
 
 BasketWidget::BasketWidget(QWidget *parent)
     : QWidget(parent), ui(new Ui::BasketWidget) {
