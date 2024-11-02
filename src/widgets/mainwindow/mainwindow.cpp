@@ -139,7 +139,7 @@ void MainWindow::newSubcategory(int number) {
 void MainWindow::setCategory() {
     ui->comboBoxCategory->addItem("Категории");
     for(int i = 0; i < SIZE_PRODUCTS; i++) {
-        ui->comboBoxCategory->addItem(data->ARR_CAREGORY[i]);
+        ui->comboBoxCategory->addItem(data->ARR_CATEGORY[i]);
     }
     ui->comboBoxSubcategoty->addItem("Подкатегории");
     category = "Категории";
@@ -506,7 +506,6 @@ void MainWindow::sortProduct() {
             data->doProductMultiples();
             break;
         }
-    }
-
+        }
 }
 
