@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QTableWidget>
+
 #include "logic/product.h"
 
 namespace Ui {

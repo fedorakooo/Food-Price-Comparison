@@ -1,6 +1,7 @@
 #include "productwidget.h"
 #include "ui_productwidget.h"
 
+
 ProductWidget::ProductWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ProductWidget)
@@ -72,7 +73,7 @@ void ProductWidget::add(Product* product) {
 void ProductWidget::setBestPrice(int number, double price) {
     arrLabelShop[number]->setStyleSheet("QLabel { color : red; }");
     arrLabelPriceShop[number]->setStyleSheet("QLabel { color : red; }");
-    arrLabelPriceShop[number]->setText((price == -1) ? "—" : StringProcessing::additionPrice(QString::number(price)));
+    arrLabelPriceShop[number]->setText((price == -1) ? "—" : StringFormatter::formatPrice(QString::number(price)));
 }
 
 ProductWidget::~ProductWidget()
@@ -83,5 +84,5 @@ ProductWidget::~ProductWidget()
 void ProductWidget::setPrice(int number, double price) {
     arrLabelShop[number]->setStyleSheet("QLabel { color : black; }");
     arrLabelPriceShop[number]->setStyleSheet("QLabel { color : black; }");
-    arrLabelPriceShop[number]->setText((price == -1) ? "—" : StringProcessing::additionPrice(QString::number(price)));
+    arrLabelPriceShop[number]->setText((price == -1) ? "—" : StringFormatter::formatPrice(QString::number(price)));
 }

@@ -1,6 +1,7 @@
 #include "basketwidget.h"
 #include "ui_basketwidget.h"
-#include "logic/stringprocessing.h"
+
+#include "logic/stringformatter.h"
 
 BasketWidget::BasketWidget(QWidget *parent)
     : QWidget(parent), ui(new Ui::BasketWidget) {
@@ -58,7 +59,7 @@ void BasketWidget::addProductToTable(Product* product) {
             item->setText("-");
         } else {
             arrFullPrice[i] += product->getArrPrice()[i];
-            item->setText(StringProcessing::additionPrice(QString::number(product->getArrPrice()[i])));
+            item->setText(StringFormatter::formatPrice(QString::number(product->getArrPrice()[i])));
         }
         ui->tableWidget->setItem(numberProductsOnBasket + 1, 2 + i, item);
     }
@@ -84,7 +85,7 @@ void BasketWidget::updateProductPrices(Product* product) {
 
     for (int i = 0; i < NUMBER_CATEGORY; i++) {
         if (prices[i] == minimum) {
-            auto *item = new QTableWidgetItem(StringProcessing::additionPrice(QString::number(prices[i])));
+            auto *item = new QTableWidgetItem(StringFormatter::formatPrice(QString::number(prices[i])));
             item->setForeground(QBrush(QColor(255, 0, 0))); // QColor(255, 0, 0) is equivalent to red color
             ui->tableWidget->setItem(numberProductsOnBasket + 1, 2 + i, item);
         }
@@ -137,12 +138,12 @@ void BasketWidget::updateInfo() {
     for (int i = 0; i < NUMBER_CATEGORY; i++) {
         std::unique_ptr<QTableWidgetItem> item;
         if (arrNoProduct[i] == 0 && arrFullPrice[i] == minimum && minimum != 0) {
-            item = std::make_unique<QTableWidgetItem>(StringProcessing::additionPrice(QString::number(arrFullPrice[i])));
+            item = std::make_unique<QTableWidgetItem>(StringFormatter::formatPrice(QString::number(arrFullPrice[i])));
             item->setForeground(QBrush(QColor(255, 0, 0)));
         } else if (arrNoProduct[i] != 0) {
             item = std::make_unique<QTableWidgetItem>("-");
         } else {
-            item = std::make_unique<QTableWidgetItem>(StringProcessing::additionPrice(QString::number(arrFullPrice[i])));
+            item = std::make_unique<QTableWidgetItem>(StringFormatter::formatPrice(QString::number(arrFullPrice[i])));
         }
         item->setFont(font);
         ui->tableWidget->setItem(0, 2 + i, item.release());

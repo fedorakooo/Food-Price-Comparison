@@ -1,5 +1,4 @@
-#ifndef PROJECTAPPEARANCE_H
-#define PROJECTAPPEARANCE_H
+#pragma once
 
 #include <QFont>
 #include <QLabel>
@@ -17,5 +16,3 @@ public:
     static void setCorrectFontName(QFont* fontPrice);
     static void setSettingFontPicture(QVector<QLabel*> arrLabelPicture);
 };
-
-#endif // PROJECTAPPEARANCE_H
