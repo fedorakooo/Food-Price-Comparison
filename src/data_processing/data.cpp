@@ -1,5 +1,6 @@
 #include "data.h"
-#include "logic/stringprocessing.h"
+
+#include "logic/productfinder.h"
 
 Data::Data() {
     initializeDatabase();
@@ -137,7 +138,7 @@ void Data::loadProducts(const QString& substr) {
     query->exec("SELECT * FROM Products");
     while (query->next()) {
         QString name = query->value(1).toString();
-        if (StringProcessing::searchKMP(name, substr)) {
+        if (ProductFinder::searchKMP(name, substr)) {
             product.push_back(createProductFromQuery());
         }
     }
@@ -147,7 +148,7 @@ void Data::loadProductsBySubcategory(const QString& subcategory, const QString& 
     query->exec("SELECT * FROM Products WHERE subcategory = '" + subcategory + "'");
     while (query->next()) {
         QString name = query->value(1).toString();
-        if (StringProcessing::searchKMP(name, substr)) {
+        if (ProductFinder::searchKMP(name, substr)) {
             product.push_back(createProductFromQuery());
         }
     }

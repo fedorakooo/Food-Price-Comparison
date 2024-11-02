@@ -1,12 +1,13 @@
 #pragma once
 
-#include "logic/product.h"
 #include <QMap>
 #include <QDateTime>
 #include <QRandomGenerator>
 #include <QPair>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+
+#include "logic/product.h"
 
 class Data {
 public:
