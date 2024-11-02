@@ -1,8 +1,6 @@
 #include "productsort.h"
 
-ProductSort::ProductSort() {
-
-}
+ProductSort::ProductSort() = default;
 
 void ProductSort::insertionSortIncrease(QVector<Product*> *array, int start_index, int end_index)
 {
@@ -10,12 +8,12 @@ void ProductSort::insertionSortIncrease(QVector<Product*> *array, int start_inde
     {
         Product* temp = array->at(i);
         int j = i - 1;
-        while(j >= start_index && temp->getBestPrice() < array->at(j)->getBestPrice())
+        while (j >= start_index && temp->getBestPrice() < array->at(j)->getBestPrice())
         {
-            (*array)[j+1] = array->at(j);
+            (*array)[j + 1] = array->at(j);
             j--;
         }
-        (*array)[j+1] = temp;
+        (*array)[j + 1] = temp;
     }
 }
 
@@ -40,9 +38,9 @@ void ProductSort::mergeIncrease(QVector<Product*> *array, int start_index, int m
     int j = 0;
     int k = start_index;
 
-    for (; i < left_size && j < right_size; k++)
+    while (i < left_size && j < right_size)
     {
-        if(left_array[i]->getBestPrice() <= right_array[j]->getBestPrice())
+        if (left_array[i]->getBestPrice() <= right_array[j]->getBestPrice())
         {
             (*array)[k] = left_array[i];
             i++;
@@ -52,36 +50,40 @@ void ProductSort::mergeIncrease(QVector<Product*> *array, int start_index, int m
             (*array)[k] = right_array[j];
             j++;
         }
+        k++;
     }
-    for (; i < left_size ;i++ , k++)
+    while (i < left_size)
     {
         (*array)[k] = left_array[i];
+        i++, k++;
     }
-    for (; j < right_size; j++ , k++)
+    while (j < right_size)
     {
         (*array)[k] = right_array[j];
+        j++, k++;
     }
 }
 
+// TimSort sorting algorithm is used to sort products by their minimum price
 void ProductSort::timsortIncrease(QVector<Product*> *array)
 {
-    while(!array->isEmpty() && !array->back()->isValid()) {
+    while (!array->isEmpty() && !array->back()->isValid()) {
         array->pop_back();
     }
 
     for (int i = 0; i < (*array).size(); i += RUN)
     {
-        insertionSortIncrease(array, i, qMin((i+RUN-1), ((array)->size() - 1)));
+        insertionSortIncrease(array, i, qMin((i + RUN - 1), (array->size() - 1)));
     }
 
     for (int n = RUN; n < (*array).size(); n *= 2)
     {
-        for (int start_index = 0; start_index < array->size(); start_index += 2*n)
+        for (int start_index = 0; start_index < array->size(); start_index += 2 * n)
         {
             int mid = start_index + n - 1;
-            int end_index = qMin((start_index + 2*n - 1),((*array).size()-1));
+            int end_index = qMin((start_index + 2 * n - 1), ((*array).size() - 1));
 
-            if(mid < end_index)
+            if (mid < end_index)
             {
                 mergeIncrease(array, start_index, mid, end_index);
             }
@@ -91,18 +93,17 @@ void ProductSort::timsortIncrease(QVector<Product*> *array)
 
 void ProductSort::insertionSortDecrease(QVector<Product*> *array, int start_index, int end_index)
 {
-
     for (int i = start_index + 1; i <= end_index; i++)
     {
         Product* temp = array->at(i);
         int j = i - 1;
 
-        while(j >= start_index && temp->getBestPrice() > array->at(j)->getBestPrice())
+        while (j >= start_index && temp->getBestPrice() > array->at(j)->getBestPrice())
         {
-            (*array)[j+1] = array->at(j);
+            (*array)[j + 1] = array->at(j);
             j--;
         }
-        (*array)[j+1] = temp;
+        (*array)[j + 1] = temp;
     }
 }
 
@@ -127,9 +128,9 @@ void ProductSort::mergeDecrease(QVector<Product*> *array, int start_index, int m
     int j = 0;
     int k = start_index;
 
-    for (; i < left_size && j < right_size; k++)
+    while (i < left_size && j < right_size)
     {
-        if(left_array[i]->getBestPrice() >= right_array[j]->getBestPrice())
+        if (left_array[i]->getBestPrice() >= right_array[j]->getBestPrice())
         {
             (*array)[k] = left_array[i];
             i++;
@@ -139,35 +140,39 @@ void ProductSort::mergeDecrease(QVector<Product*> *array, int start_index, int m
             (*array)[k] = right_array[j];
             j++;
         }
+        k++;
     }
-    for (; i < left_size ;i++ , k++)
+    while (i < left_size)
     {
         (*array)[k] = left_array[i];
+        i++, k++;
     }
-    for (; j < right_size; j++ , k++)
+    while (j < right_size)
     {
         (*array)[k] = right_array[j];
+        j++, k++;
     }
 }
 
+// TimSort sorting algorithm is used to sort products by their minimum price
 void ProductSort::timsortDecrease(QVector<Product*> *array)
 {
-    while(!array->isEmpty() && array->back()->getBestPrice() == 0) {
+    while (!array->isEmpty() && array->back()->getBestPrice() == 0) {
         array->pop_back();
     }
     for (int i = 0; i < (*array).size(); i += RUN)
     {
-        insertionSortDecrease(array, i, qMin((i+RUN-1), ((array)->size() - 1)));
+        insertionSortDecrease(array, i, qMin((i + RUN - 1), (array->size() - 1)));
     }
 
     for (int n = RUN; n < (*array).size(); n *= 2)
     {
-        for (int start_index = 0; start_index < array->size(); start_index += 2*n)
+        for (int start_index = 0; start_index < array->size(); start_index += 2 * n)
         {
             int mid = start_index + n - 1;
-            int end_index = qMin((start_index + 2*n - 1),((*array).size()-1));
+            int end_index = qMin((start_index + 2 * n - 1), ((*array).size() - 1));
 
-            if(mid < end_index)
+            if (mid < end_index)
             {
                 mergeDecrease(array, start_index, mid, end_index);
             }
@@ -175,24 +180,31 @@ void ProductSort::timsortDecrease(QVector<Product*> *array)
     }
 }
 
-void ProductSort::threeWayQuickSortIncrease(QVector<Product*> *array, int low, int high) {
+// The three-way quick sorting algorithm is used to sort products by name
+void ProductSort::threeWayQuickSortIncrease(QVector<Product*> *array, int low, int high)
+{
     if (low >= high) return;
 
     QString pivot = array->at(low)->getName();
-
     int lt = low;
     int gt = high;
     int i = low + 1;
 
-    while (i <= gt) {
-        if (array->at(i)->getName() < pivot) {
+    while (i <= gt)
+    {
+        if (array->at(i)->getName() < pivot)
+        {
             std::swap((*array)[i], (*array)[lt]);
             lt++;
             i++;
-        } else if (array->at(i)->getName() > pivot) {
+        }
+        else if (array->at(i)->getName() > pivot)
+        {
             std::swap((*array)[i], (*array)[gt]);
             gt--;
-        } else {
+        }
+        else
+        {
             i++;
         }
     }
@@ -200,24 +212,35 @@ void ProductSort::threeWayQuickSortIncrease(QVector<Product*> *array, int low, i
     threeWayQuickSortIncrease(array, gt + 1, high);
 }
 
-void ProductSort::threeWayQuickSortDecrease(QVector<Product*> *array, int low, int high) {
+// The three-way quick sorting algorithm is used to sort products by name
+void ProductSort::threeWayQuickSortDecrease(QVector<Product*> *array, int low, int high)
+{
     if (low >= high) return;
-    while(!array->isEmpty() && array->back()->getBestPrice() == -1) {
+
+    while (!array->isEmpty() && array->back()->getBestPrice() == -1) {
         array->pop_back();
     }
+
     QString pivot = array->at(low)->getName();
     int lt = low;
     int gt = high;
     int i = low + 1;
-    while (i <= gt) {
-        if (array->at(i)->getName() > pivot) {
+
+    while (i <= gt)
+    {
+        if (array->at(i)->getName() > pivot)
+        {
             std::swap((*array)[i], (*array)[lt]);
             lt++;
             i++;
-        } else if (array->at(i)->getName() < pivot) {
+        }
+        else if (array->at(i)->getName() < pivot)
+        {
             std::swap((*array)[i], (*array)[gt]);
             gt--;
-        } else {
+        }
+        else
+        {
             i++;
         }
     }

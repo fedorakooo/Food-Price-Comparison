@@ -1,4 +1,5 @@
-# pragma once
+#ifndef PRODUCTSORT_H
+#define PRODUCTSORT_H
 
 #include "product.h"
 
@@ -17,3 +18,5 @@ private:
     static void mergeDecrease(QVector<Product*> *array, int start_index, int mid, int end_index);
     static const int RUN = 64;
 };
+
+#endif // PRODUCTSORT_H
