@@ -13,6 +13,8 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    logic/productfinder.cpp \
+    logic/stringformatter.cpp \
     widgets/basketwidget/basketwidget.cpp \
     data_processing/data.cpp \
     main.cpp \
@@ -20,18 +22,18 @@ SOURCES += \
     logic/product.cpp \
     logic/productsort.cpp \
     widgets/productwidget/productwidget.cpp \
-    logic/projectappearance.cpp \
-    logic/stringprocessing.cpp
+    logic/projectappearance.cpp
 
 HEADERS += \
+    logic/productfinder.h \
+    logic/stringformatter.h \
     widgets/basketwidget/basketwidget.h \
     data_processing/data.h \
     widgets/mainwindow/mainwindow.h \
     logic/product.h \
     logic/productsort.h \
     widgets/productwidget/productwidget.h \
-    logic/projectappearance.h \
-    logic/stringprocessing.h
+    logic/projectappearance.h
 
 FORMS += \
     ui/basketwidget.ui \
