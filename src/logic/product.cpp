@@ -4,15 +4,15 @@ Product::Product() :
     file(""),
     name(""),
     category(""),
-    arrCost(QVector<double>(8, -1)),
+    arrCost(QVector<double>(8, -1)), // -1 is about non-validity of the value
     picture(QPixmap()) {}
 
 Product::Product(QString name, const QVector<double> arrCost, QString file, QString category, QString subcategory) :
-    name(name),
-    arrCost(arrCost),
     file(file),
+    name(name),
     category(category),
     subcategory(subcategory),
+    arrCost(arrCost),
     picture(QPixmap("./image/" + file)) {}
 
 QPixmap Product::getPicture() const {
