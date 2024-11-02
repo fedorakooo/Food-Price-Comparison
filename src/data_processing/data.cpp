@@ -86,7 +86,7 @@ void Data::setProduct(const QString& category, const QString& subcategory) {
     doProductMultiples();
 }
 
-// Populates the current list of products according to the given category, subcategory and search query
+// Populate the current list of products according to the given category, subcategory and search query
 void Data::setProduct(const QString& category, const QString& subcategory, const QString& substr) {
     if (substr.isEmpty()) {
         setPopularProduct(category, subcategory);
@@ -154,7 +154,7 @@ void Data::loadProductsBySubcategory(const QString& subcategory, const QString& 
     }
 }
 
-// Defines how to set popular products based on input category and subcategory
+// Define how to set popular products based on input category and subcategory
 void Data::setPopularProduct(QString _category, QString _subcategory) {
     product.clear();
 
@@ -169,7 +169,7 @@ void Data::setPopularProduct(QString _category, QString _subcategory) {
     doProductMultiples();
 }
 
-// Handles selection of popular products across all categories
+// Handle selection of popular products across all categories
 void Data::handleCategoryProducts() {
     QSet<int> set;
 
@@ -187,7 +187,7 @@ void Data::handleCategoryProducts() {
     fetchProductsFromIds(set);
 }
 
-// Manages the selection of popular products within a specific category
+// Manage the selection of popular products within a specific category
 void Data::handleSubcategoryProducts(const QString& category) {
     QSet<int> set;
     auto it = mapCategory.find(category);
@@ -211,7 +211,6 @@ void Data::handleSubcategoryProducts(const QString& category) {
             }
         }
     }
-
     fetchProductsFromIds(set);
 }
 
@@ -266,7 +265,7 @@ Product* Data::createProductFromQuery() {
     return new Product(name, prices, file, category, subcategory);
 }
 
-// Returns category index based on category name
+// Return category index based on category name
 int Data::getNumberNameCategory(QString category) {
     for(int i = 0; i < NUMBER_CATEGORY; i++) {
         if(ARR_CATEGORY[i] == category) {
@@ -276,7 +275,7 @@ int Data::getNumberNameCategory(QString category) {
     return -1;
 }
 
-// Fills in the word list for categories
+// Fill in the word list for categories
 void Data::setWordListCategory() {
     QStringList list;
     query->exec("SELECT name FROM Products");
@@ -294,7 +293,7 @@ void Data::setWordListCategory() {
     }
 }
 
-// Returns a list of words for the given category and subcategory
+// Return a list of words for the given category and subcategory
 QStringList Data::getWordList(QString category, QString subcategory) {
     if(subcategory == "Подкатегории") {
         if(category == "Категории") {

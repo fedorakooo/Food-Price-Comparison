@@ -33,9 +33,9 @@ public:
         "Молочные продукты, яйца"
     };
 
-    int getNumberNameCategory(QString category);
     void deleteNoProduct();
     void doProductMultiples();
+    int getNumberNameCategory(QString category);
     QStringList getWordList(QString category, QString subcategory);
 
 private:
@@ -48,12 +48,11 @@ private:
     void loadProductsBySubcategory(const QString& subcategory);
     void loadProducts(const QString& substr);
     void loadProductsBySubcategory(const QString& subcategory, const QString& substr);
-
-    Product* createProductFromQuery();
-    Product* getProductFromData();
     void handleCategoryProducts();
     void handleSubcategoryProducts(const QString& category);
     void fetchProductsFromIds(const QSet<int>& ids);
+    Product* createProductFromQuery();
+    Product* getProductFromData();
     QString getRandomSubcategory(const QString& category);
     QString getRandomSubcategoryForAnyCategory();
 
