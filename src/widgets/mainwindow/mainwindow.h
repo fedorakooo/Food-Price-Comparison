@@ -98,12 +98,10 @@ private slots:
     void setInformationSomeProduct(int number, Product* product);
     void on_buttonSearchProduct_clicked();
 
-    void on_radioIncreasingName_clicked();
-    void on_radioReductionName_clicked();
-    void on_radioIncreasingPrice_clicked();
-    void on_radioReductionPrice_clicked();
+    void on_radioButtonClicked(int sortType);
+    void connectRadioButtons();
+
     void on_pushButton_clicked();
-    void on_radioPopularProduct_clicked();
 
     void updateProductData();
     void sortProducts();

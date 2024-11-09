@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     setupBackground();
     setupCompleter();
     setupConnections();
+    connectRadioButtons();
 
     numberAllPage = data->product.size() / SIZE_PRODUCTS;
     updatePage();
@@ -338,30 +339,24 @@ void MainWindow::setupOpenWidgetButtonConnections() {
     }
 }
 
-void MainWindow::on_radioPopularProduct_clicked() {
-    numberSort = 0;
-    updateProductData();
+void MainWindow::connectRadioButtons() {
+    connect(ui->radioPopularProduct, &QRadioButton::clicked, [=]() { on_radioButtonClicked(0); });
+    connect(ui->radioIncreasingName, &QRadioButton::clicked, [=]() { on_radioButtonClicked(1); });
+    connect(ui->radioReductionName, &QRadioButton::clicked, [=]() { on_radioButtonClicked(2); });
+    connect(ui->radioIncreasingPrice, &QRadioButton::clicked, [=]() { on_radioButtonClicked(3); });
+    connect(ui->radioReductionPrice, &QRadioButton::clicked, [=]() { on_radioButtonClicked(4); });
 }
 
-void MainWindow::on_radioIncreasingName_clicked() {
-    numberSort = 1;
-    sortProducts();
+void MainWindow::on_radioButtonClicked(int sortType) {
+    numberSort = sortType;
+
+    if (sortType == 0) {
+        updateProductData();
+    } else {
+        sortProducts();
+    }
 }
 
-void MainWindow::on_radioReductionName_clicked() {
-    numberSort = 2;
-    sortProducts();
-}
-
-void MainWindow::on_radioIncreasingPrice_clicked() {
-    numberSort = 3;
-    sortProducts();
-}
-
-void MainWindow::on_radioReductionPrice_clicked() {
-    numberSort = 4;
-    sortProducts();
-}
 
 // Clears the search box and drops the view to display popular products
 void MainWindow::on_pushButton_clicked() {
